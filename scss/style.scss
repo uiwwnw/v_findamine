@@ -1,0 +1,28 @@
+@charset "utf-8";
+$horizon: 15;
+$vertical: 15;
+$boxSize: 30;
+
+@function sizer($size) {
+	@return $size + px;
+}
+
+.main {
+	width: sizer($boxSize * ($horizon + (.1 * $horizon * 2)));
+	height: sizer($boxSize * ($vertical + (.1 * $vertical * 2)));
+	font-size: 0;
+}
+
+input {
+	display: inline-block;
+	width: sizer($boxSize);
+	height: sizer($boxSize);
+	margin: sizer($boxSize / 10);
+	text-align: center;
+	box-sizing: border-box;
+	line-height: sizer($boxSize);
+	font-size: sizer($boxSize * .7);
+	&[readonly] {
+		visibility: hidden;
+	}
+}

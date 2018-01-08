@@ -2,11 +2,10 @@ var ctrl = {
     'main': document.querySelector('.main'),
     'el': document.getElementsByTagName('input'),
     'el_length': 0,
-    'num': [],
     'horizon': 15,
     'vertical': 15,
+    data: data.slice()
 };
-
 
 function rnd (_start, _end) {
     return Math.floor(Math.random() * _end) + _start;
@@ -15,10 +14,13 @@ function rnd (_start, _end) {
 function createInput(_horizon, _vertical) {
     var inp;
     var length = _horizon * _vertical;
+    ctrl.num = [];
     for (var i = 0; i < length; i++) {
         if(ctrl.el_length === 0) {
             inp = document.createElement('input');
             ctrl.main.prepend(inp);
+        } else {
+            ctrl.el[i].removeAttribute('value');
         }
         ctrl.num.push(i);
     }
@@ -48,11 +50,11 @@ function wright() {
     // console.log(ctrl.num)
     // while(ctrl.num.length !== 0) {
     //     _ctrl.var = rnd(0, ctrl.num.length);
-    //     _ctrl.data_var = rnd(0, data.length);
+    //     _ctrl.data_var = rnd(0, ctrl.data.length);
     //     _ctrl.num = ctrl.num[_ctrl.var];
-    //     _ctrl.txt = data[rnd(0, _ctrl.data_var)].name;
+    //     _ctrl.txt = ctrl.data[rnd(0, _ctrl.data_var)].name;
     //     _ctrl.txt_length = _ctrl.txt.length;
-    //     data.splice(_ctrl.data_var, 1);
+    //     ctrl.data.splice(_ctrl.data_var, 1);
     //     ctrl.num.splice(_ctrl.var, _ctrl.txt_length + 1);
     //     if (new chk(_ctrl)) {
     //         for(var i = 0; i < _ctrl.txt_length + 1; i++) {
@@ -66,9 +68,9 @@ function wright() {
     _ctrl.var = -1;
     while(ctrl.num.length !== 0) {
         _ctrl.var += 1;
-        _ctrl.data_var = rnd(0, data.length);
+        _ctrl.data_var = rnd(0, ctrl.data.length);
         _ctrl.num = ctrl.num[_ctrl.var];
-        _ctrl.txt = data[rnd(0, _ctrl.data_var)].name;
+        _ctrl.txt = ctrl.data[rnd(0, _ctrl.data_var)].name;
         _ctrl.txt_length = _ctrl.txt.length;
         // console.log(chk(_ctrl));
         if (chk(_ctrl)) {

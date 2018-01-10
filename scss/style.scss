@@ -7,10 +7,23 @@ $boxSize: 30;
 	@return $size + px;
 }
 
+body {
+	margin: 0;
+}
 .main {
 	width: sizer($boxSize * ($horizon + (.1 * $horizon * 2)));
 	height: sizer($boxSize * ($vertical + (.1 * $vertical * 2)));
 	font-size: 0;
+}
+
+aside {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: calc(100% - #{sizer($boxSize * ($horizon + (.1 * $horizon * 2)))});
+	height: 100%;
+	color: #fff;
+	background: #000;
 }
 
 input {

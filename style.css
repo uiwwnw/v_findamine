@@ -1,1 +1,1 @@
-.main{width:540px;height:540px;font-size:0}input{display:inline-block;width:30px;height:30px;margin:3px;text-align:center;box-sizing:border-box;line-height:30px;font-size:21px}input[readonly]{visibility:hidden}
+body{margin:0}.main{width:540px;height:540px;font-size:0}aside{position:absolute;right:0;top:0;width:calc(100% - 540px);height:100%;color:#fff;background:#000}input{display:inline-block;width:30px;height:30px;margin:3px;text-align:center;box-sizing:border-box;line-height:30px;font-size:21px}input[readonly]{visibility:hidden}

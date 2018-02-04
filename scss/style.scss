@@ -2,28 +2,36 @@
 $horizon: 15;
 $vertical: 15;
 $boxSize: 30;
-
 @function sizer($size) {
-	@return $size + px;
+	@return $size+px;
 }
 
 body {
 	margin: 0;
+	background: #000;
 }
+
 .main {
+	float: left;
 	width: sizer($boxSize * ($horizon + (.1 * $horizon * 2)));
 	height: sizer($boxSize * ($vertical + (.1 * $vertical * 2)));
 	font-size: 0;
+	background: #fff;
 }
 
 aside {
-	position: absolute;
-	right: 0;
-	top: 0;
+	overflow: auto;
+	float: left;
 	width: calc(100% - #{sizer($boxSize * ($horizon + (.1 * $horizon * 2)))});
-	height: 100%;
-	color: #fff;
-	background: #000;
+	height: sizer($boxSize * ($vertical + (.1 * $vertical * 2)));
+	;
+	color: #000;
+	background: #fff;
+
+	@media screen and (max-width: 540px) {
+		width: sizer($boxSize * ($vertical + (.1 * $vertical * 2)));
+		height: calc(100vh - #{sizer($boxSize * ($vertical + (.1 * $vertical * 2)))})
+	}
 }
 
 input {

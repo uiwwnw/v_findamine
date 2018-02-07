@@ -70,17 +70,20 @@ function wright() {
         _ctrl.var += 1;
         _ctrl.data_var = rnd(0, ctrl.data.length);
         _ctrl.num = ctrl.num[_ctrl.var];
-        _ctrl.txt = ctrl.data[rnd(0, _ctrl.data_var)].name;
+        _ctrl.txt = ctrl.data[_ctrl.data_var].name;
+        _ctrl.des = ctrl.data[_ctrl.data_var].mean;
         _ctrl.txt_length = _ctrl.txt.length;
         // console.log(chk(_ctrl));
         if (chk(_ctrl)) {
             data.splice(_ctrl.data_var, 1);
             ctrl.num.splice(_ctrl.var, _ctrl.txt_length);
             for(var i = 0; i < _ctrl.txt_length + 1; i++) {
+                var _des2 = _ctrl.des;
                 var _txt2 = _ctrl.txt[i];
                 if (_txt2 === undefined) {_txt2 = ''};
                 // console.log(ctrl.el[_ctrl.num + i], _ctrl.num + i, _ctrl.num + _txt_length);
                 ctrl.el[_ctrl.num + i].setAttribute('value', _txt2);
+                ctrl.el[_ctrl.num + i].setAttribute('title', _des2);
             }
         } else {
             return false;

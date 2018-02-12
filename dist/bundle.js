@@ -10078,11 +10078,25 @@ var App = function (_React$Component) {
     return App;
 }(_react2.default.Component);
 
-// class Maps {
-//     render() {
+var Rd = function (_React$Component2) {
+    _inherits(Rd, _React$Component2);
 
-//     }
-// }
+    function Rd() {
+        _classCallCheck(this, Rd);
+
+        return _possibleConstructorReturn(this, (Rd.__proto__ || Object.getPrototypeOf(Rd)).apply(this, arguments));
+    }
+
+    _createClass(Rd, [{
+        key: 'render',
+        value: function render(n) {
+            var rd = Math.floor(Math.random() * n);
+            return rd;
+        }
+    }]);
+
+    return Rd;
+}(_react2.default.Component);
 
 var Input = function (_App) {
     _inherits(Input, _App);
@@ -10103,6 +10117,7 @@ var Input = function (_App) {
                     this.state.maps.push(j + 'x' + i + 'y');
                 }
             }
+            // console.log(new Rd().render(2))
             return _react2.default.createElement(
                 'div',
                 { className: 'inputBox' },

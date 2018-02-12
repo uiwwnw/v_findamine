@@ -16,11 +16,15 @@ class App extends React.Component {
     }
 }
 
-// class Maps {
-//     render() {
-
-//     }
-// }
+class Rd extends React.Component {
+    constructor() {
+        super(...arguments);
+    }
+    render(n) {
+        let rd = Math.floor((Math.random() * n));
+        return rd;
+    }
+}
 
 class Input extends App {
     constructor() {
@@ -34,6 +38,7 @@ class Input extends App {
                 this.state.maps.push(j + 'x' + i + 'y');
             }
         }
+        // console.log(new Rd().render(2))
         return (
             <div className="inputBox">
                 {this.state.maps.map((item, i) => {

@@ -10050,6 +10050,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// import datas from './data.js';
+// console.log(datas);
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
@@ -10059,7 +10062,8 @@ var App = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 
         _this.state = {
-            maps: []
+            maps: [],
+            popup: false
         };
         return _this;
     }
@@ -10070,7 +10074,7 @@ var App = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(Input, { x: this.props.x, y: this.props.y })
+                _react2.default.createElement(InputMap, { x: this.props.x, y: this.props.y })
             );
         }
     }]);
@@ -10078,13 +10082,9 @@ var App = function (_React$Component) {
     return App;
 }(_react2.default.Component);
 
-var Rd = function (_React$Component2) {
-    _inherits(Rd, _React$Component2);
-
+var Rd = function () {
     function Rd() {
         _classCallCheck(this, Rd);
-
-        return _possibleConstructorReturn(this, (Rd.__proto__ || Object.getPrototypeOf(Rd)).apply(this, arguments));
     }
 
     _createClass(Rd, [{
@@ -10096,10 +10096,44 @@ var Rd = function (_React$Component2) {
     }]);
 
     return Rd;
-}(_react2.default.Component);
+}();
 
-var Input = function (_App) {
-    _inherits(Input, _App);
+var InputMap = function (_App) {
+    _inherits(InputMap, _App);
+
+    function InputMap() {
+        _classCallCheck(this, InputMap);
+
+        return _possibleConstructorReturn(this, (InputMap.__proto__ || Object.getPrototypeOf(InputMap)).apply(this, arguments));
+    }
+
+    _createClass(InputMap, [{
+        key: 'render',
+        value: function render() {
+            var x = Number(this.props.x) + 1;
+            var y = Number(this.props.y) + 1;
+            for (var i = y / 2 - 1; i > -(y / 2); i--) {
+                for (var j = -(x / 2 - 1); j < x / 2; j++) {
+                    this.state.maps.push(j + 'x' + i + 'y');
+                }
+            }
+
+            // console.log(new Rd().render(2))
+            return _react2.default.createElement(
+                'div',
+                { className: 'inputBox' },
+                this.state.maps.map(function (item, i) {
+                    return _react2.default.createElement(Input, { key: i, id: item });
+                })
+            );
+        }
+    }]);
+
+    return InputMap;
+}(App);
+
+var Input = function (_InputMap) {
+    _inherits(Input, _InputMap);
 
     function Input() {
         _classCallCheck(this, Input);
@@ -10110,30 +10144,73 @@ var Input = function (_App) {
     _createClass(Input, [{
         key: 'render',
         value: function render() {
-            var x = Number(this.props.x) + 1;
-            var y = Number(this.props.y) + 1;
-            for (var i = y / 2 - 1; i > -(y / 2); i--) {
-                for (var j = -(x / 2 - 1); j < x / 2; j++) {
-                    this.state.maps.push(j + 'x' + i + 'y');
-                }
-            }
-            // console.log(new Rd().render(2))
+            var popup = _react2.default.createElement(Popup, null);
+
             return _react2.default.createElement(
                 'div',
-                { className: 'inputBox' },
-                this.state.maps.map(function (item, i) {
-                    return _react2.default.createElement(
-                        'div',
-                        { className: 'inputWrap', key: i },
-                        _react2.default.createElement('input', { id: item })
-                    );
-                })
+                { className: 'inputWrap' },
+                _react2.default.createElement('input', { id: this.props.id, onFocus: this.popOpen.bind(this), onBlur: this.popClose.bind(this) }),
+                this.state.popup === false ? '' : popup
             );
+        }
+    }, {
+        key: 'popOpen',
+        value: function popOpen(e) {
+            this.setState({
+                popup: true
+            });
+            // e.target.parentNode.classList.add('popup');
+        }
+    }, {
+        key: 'popClose',
+        value: function popClose(e) {
+            this.setState({
+                popup: false
+            });
+            // e.target.parentNode.classList.remove('popup');
         }
     }]);
 
     return Input;
-}(App);
+}(InputMap);
+
+var Popup = function (_React$Component2) {
+    _inherits(Popup, _React$Component2);
+
+    function Popup() {
+        _classCallCheck(this, Popup);
+
+        return _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).apply(this, arguments));
+    }
+
+    _createClass(Popup, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement('div', { className: 'popup' });
+        }
+    }]);
+
+    return Popup;
+}(_react2.default.Component);
+
+var Text = function (_React$Component3) {
+    _inherits(Text, _React$Component3);
+
+    function Text() {
+        _classCallCheck(this, Text);
+
+        return _possibleConstructorReturn(this, (Text.__proto__ || Object.getPrototypeOf(Text)).apply(this, arguments));
+    }
+
+    _createClass(Text, [{
+        key: 'render',
+        value: function render() {
+            Data['안녕'];
+        }
+    }]);
+
+    return Text;
+}(_react2.default.Component);
 
 exports.default = App;
 

@@ -1,32 +1,32 @@
 import React from 'react';
+// import datas from './data.js';
+// console.log(datas);
 
 class App extends React.Component {
     constructor() {
         super(...arguments);
         this.state = {
-            maps: []
+            maps: [],
+            popup: false
         }
     }
     render() {
         return (
             <div>
-                <Input x={this.props.x} y={this.props.y} />
+                <InputMap x={this.props.x} y={this.props.y} />
             </div>
         )
     }
 }
 
-class Rd extends React.Component {
-    constructor() {
-        super(...arguments);
-    }
+class Rd {
     render(n) {
         let rd = Math.floor((Math.random() * n));
         return rd;
     }
 }
 
-class Input extends App {
+class InputMap extends App {
     constructor() {
         super(...arguments);
     }
@@ -38,14 +38,13 @@ class Input extends App {
                 this.state.maps.push(j + 'x' + i + 'y');
             }
         }
+        
         // console.log(new Rd().render(2))
         return (
             <div className="inputBox">
                 {this.state.maps.map((item, i) => {
                     return (
-                        <div className="inputWrap" key={i}>
-                            <input id={item} />
-                        </div>
+                        <Input key={i} id={item}/>
                     )
                 })}
             </div>
@@ -53,4 +52,50 @@ class Input extends App {
     }
 }
 
+class Input extends InputMap {
+    constructor() {
+        super(...arguments);
+    }
+    render() {
+        let popup = <Popup />;
+        
+        return (
+            <div className="inputWrap">
+                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} />
+                {this.state.popup===false?'':popup}
+            </div>
+        )
+    }
+    popOpen(e) {
+        this.setState({
+            popup: true
+        })
+        // e.target.parentNode.classList.add('popup');
+    }
+    popClose(e) {
+        this.setState({
+            popup: false
+        })
+        // e.target.parentNode.classList.remove('popup');
+    }
+}
+
+class Popup extends React.Component {
+    render() {
+        return (
+            <div className="popup">
+                {/* {Data[1]} */}
+            </div>
+        )
+    }
+}
+
+class Text extends React.Component {
+    constructor() {
+        super(...arguments);
+    }
+    render() {
+        Data['안녕'];
+    }
+}
 export default App;

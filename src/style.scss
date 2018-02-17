@@ -1,21 +1,28 @@
 @charset "UTF-8";
 @import "./spritesmith-generated/sprite";
 @include sprites($spritesheet-sprites);
-
 body {
     margin: 0;
-    padding: 0; 
+    padding: 0;
     background: #000;
 }
 
 .inputBox {
-    &:before { 
+    padding-top: .5%;
+    &:before {
         float: left;
         width: .5%;
+        margin-top: -.5%;
         padding-top: 100%;
         content: '';
     }
-
+    &:after {
+        display: block;
+        clear: both;
+        content: '';
+    } // .inputItem {
+    // float: left;
+    // }
     .inputWrap {
         position: relative;
         float: left;
@@ -23,7 +30,6 @@ body {
         margin: .5%;
         padding-top: 8%;
         background: #fff;
-
         input {
             position: absolute;
             top: 0;
@@ -37,6 +43,35 @@ body {
             font-size: 20px;
             font-size: 6vw;
             box-sizing: border-box;
+            @for $i from 0 through 10 {
+                $vertical: 8%;
+                $horizon: 9%;
+                &[id^="#{$i}x"]+.popup {
+                    $j: 10 - $i;
+                    right: $horizon * $j - 30
+                }
+                &[id^="#{-$i}x"]+.popup {
+                    $j: 10 - $i;
+                    right: auto;
+                    left: $horizon * $j - 30;
+                }
+                &[id*="x#{$i}y"]+.popup {
+                    $j: 10 - $i;
+                    top: $vertical * $j - 30;
+                }
+                &[id*="x#{-$i}y"]+.popup {
+                    top: auto;
+                    bottom: (-$vertical * $i) + 62;
+                }
+            }
         }
+    }
+    .popup {
+        z-index: 2;
+        position: fixed; // width: 400px;
+        // margin-left: -50%;
+        padding: 5%;
+        color: #fff;
+        background: rgba(0, 0, 0, .7);
     }
 }

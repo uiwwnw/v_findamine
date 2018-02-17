@@ -1,14 +1,10 @@
 import React from 'react';
-// import datas from './data.js';
-// console.log(datas);
+import Data from './Data';
+// console.log(Data);
 
 class App extends React.Component {
     constructor() {
         super(...arguments);
-        this.state = {
-            maps: [],
-            popup: false
-        }
     }
     render() {
         return (
@@ -29,7 +25,23 @@ class Rd {
 class InputMap extends App {
     constructor() {
         super(...arguments);
+        this.state = {
+            maps: []
+        }
     }
+    random(n){
+        let rd = Math.floor((Math.random() * n));
+        return rd;
+    }
+
+    // word() {
+    //     // this.setState({idx:})
+    //     const _txt = Data[this.random[Data.length-1]].name;
+    //     // return 'a';
+    //     _txt.forEach(function(item, i) {
+    //         return item;
+    //     });
+    // }
     render() {
         const x = Number(this.props.x) + 1;
         const y = Number(this.props.y) + 1;
@@ -38,13 +50,13 @@ class InputMap extends App {
                 this.state.maps.push(j + 'x' + i + 'y');
             }
         }
-        
+
         // console.log(new Rd().render(2))
         return (
             <div className="inputBox">
                 {this.state.maps.map((item, i) => {
                     return (
-                        <Input key={i} id={item}/>
+                        <Input key={i} id={item} idx={this.random(Data.length-1)}/>
                     )
                 })}
             </div>
@@ -55,17 +67,22 @@ class InputMap extends App {
 class Input extends InputMap {
     constructor() {
         super(...arguments);
+        this.state = {
+            popup: false
+        }
     }
     render() {
-        let popup = <Popup />;
-        
+        let rd = 1;
+        // let rd = this.random(Data.length-1);
+        let popup = <Popup idx={this.props.idx}/>;
         return (
             <div className="inputWrap">
-                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} />
-                {this.state.popup===false?'':popup}
+                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} value={Data[this.props.idx].name}/>
+                {this.state.popup === false ? '' : popup}
             </div>
         )
     }
+    
     popOpen(e) {
         this.setState({
             popup: true
@@ -84,7 +101,7 @@ class Popup extends React.Component {
     render() {
         return (
             <div className="popup">
-                {/* {Data[1]} */}
+                {Data[this.props.idx].mean}
             </div>
         )
     }
@@ -95,7 +112,7 @@ class Text extends React.Component {
         super(...arguments);
     }
     render() {
-        Data['안녕'];
+        // Data['안녕'];
     }
 }
 export default App;

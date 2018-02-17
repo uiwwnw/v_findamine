@@ -1,4 +1,5 @@
-const datas = [
+import React from 'react';
+const Data = [
     {
         "name": "가든",
         "mean": "가볍고 단출하다 의 뜻인 가든하다 에서 뿌리(어근)를 따온 이름"
@@ -1792,3 +1793,4 @@ const datas = [
         "mean": "힘차게 날아오르라고"
     }
 ]
+export default Data;

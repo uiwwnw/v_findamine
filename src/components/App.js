@@ -29,11 +29,6 @@ class InputMap extends App {
             maps: []
         }
     }
-    random(n){
-        let rd = Math.floor((Math.random() * n));
-        return rd;
-    }
-
     // word() {
     //     // this.setState({idx:})
     //     const _txt = Data[this.random[Data.length-1]].name;
@@ -56,7 +51,7 @@ class InputMap extends App {
             <div className="inputBox">
                 {this.state.maps.map((item, i) => {
                     return (
-                        <Input key={i} id={item} idx={this.random(Data.length-1)}/>
+                        <Input key={i} id={item} idx="1"/>
                     )
                 })}
             </div>
@@ -77,10 +72,27 @@ class Input extends InputMap {
         let popup = <Popup idx={this.props.idx}/>;
         return (
             <div className="inputWrap">
-                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} value={Data[this.props.idx].name}/>
+                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} value={this.word(this)}/>
                 {this.state.popup === false ? '' : popup}
             </div>
         )
+    }
+    random(n){
+        let rd = Math.floor((Math.random() * n));
+        return rd;
+    }
+    wright(n) {
+        var _n = n === undefined?this.random(Data.length):n;
+        var _txt = Data[_n];
+        var _length = _txt.length;
+        if()
+        return Data[_d].name;
+    }
+    word(e) {
+        const id = e.props.id;
+        if(id === '0x0y') {
+            return this.wright();
+        }
     }
     
     popOpen(e) {

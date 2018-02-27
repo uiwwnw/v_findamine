@@ -10115,7 +10115,7 @@ var InputMap = function (_App) {
             var rd = Math.floor(Math.random() * n);
             e[0] = _Data2.default[rd].name;
             for (var i = 1; i < this.state.maps.length; i++) {
-                e[i];
+                // e[i].
             }
         }
     }, {

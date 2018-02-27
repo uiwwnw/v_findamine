@@ -33,7 +33,7 @@ class InputMap extends App {
         let rd = Math.floor((Math.random() * n));
         e[0] = Data[rd].name;
         for(var i = 1; i < this.state.maps.length; i++) {
-            e[i]
+            // e[i].
         }
     }
     render() {

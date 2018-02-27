@@ -29,14 +29,13 @@ class InputMap extends App {
             maps: []
         }
     }
-    // word() {
-    //     // this.setState({idx:})
-    //     const _txt = Data[this.random[Data.length-1]].name;
-    //     // return 'a';
-    //     _txt.forEach(function(item, i) {
-    //         return item;
-    //     });
-    // }
+    word(e) {
+        let rd = Math.floor((Math.random() * n));
+        e[0] = Data[rd].name;
+        for(var i = 1; i < this.state.maps.length; i++) {
+            e[i]
+        }
+    }
     render() {
         const x = Number(this.props.x) + 1;
         const y = Number(this.props.y) + 1;
@@ -45,8 +44,8 @@ class InputMap extends App {
                 this.state.maps.push(j + 'x' + i + 'y');
             }
         }
-
-        // console.log(new Rd().render(2))
+        let word = [];
+        this.word(word);
         return (
             <div className="inputBox">
                 {this.state.maps.map((item, i) => {
@@ -72,7 +71,7 @@ class Input extends InputMap {
         let popup = <Popup idx={this.props.idx}/>;
         return (
             <div className="inputWrap">
-                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} value={this.word(this)}/>
+                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} />
                 {this.state.popup === false ? '' : popup}
             </div>
         )
@@ -82,17 +81,12 @@ class Input extends InputMap {
         return rd;
     }
     wright(n) {
-        var _n = n === undefined?this.random(Data.length):n;
-        var _txt = Data[_n];
-        var _length = _txt.length;
-        if()
-        return Data[_d].name;
-    }
-    word(e) {
-        const id = e.props.id;
-        if(id === '0x0y') {
-            return this.wright();
-        }
+        let a = {};
+        let _n = n === undefined?this.random(Data.length):n;
+        a.text = Data[_n].name;
+        a.length = a.text.length;
+        
+        return a;
     }
     
     popOpen(e) {

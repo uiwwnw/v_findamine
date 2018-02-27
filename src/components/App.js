@@ -1,5 +1,4 @@
 import React from 'react';
-import Data from './Data';
 // console.log(Data);
 
 class App extends React.Component {
@@ -9,32 +8,22 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <InputMap x={this.props.x} y={this.props.y} />
+                <Box x={this.props.x} y={this.props.y} />
             </div>
         )
     }
 }
 
-class Rd {
-    render(n) {
-        let rd = Math.floor((Math.random() * n));
-        return rd;
-    }
-}
-
-class InputMap extends App {
+class Box extends App {
     constructor() {
         super(...arguments);
         this.state = {
             maps: []
         }
     }
-    word(e) {
+    random(n) {
         let rd = Math.floor((Math.random() * n));
-        e[0] = Data[rd].name;
-        for(var i = 1; i < this.state.maps.length; i++) {
-            // e[i].
-        }
+        return rd;
     }
     render() {
         const x = Number(this.props.x) + 1;
@@ -44,13 +33,11 @@ class InputMap extends App {
                 this.state.maps.push(j + 'x' + i + 'y');
             }
         }
-        let word = [];
-        this.word(word);
         return (
-            <div className="inputBox">
+            <div className="map">
                 {this.state.maps.map((item, i) => {
                     return (
-                        <Input key={i} id={item} idx="1"/>
+                        <I key={i} id={item} idx={this.random(10)} />
                     )
                 })}
             </div>
@@ -58,67 +45,54 @@ class InputMap extends App {
     }
 }
 
-class Input extends InputMap {
+class I extends Box {
     constructor() {
         super(...arguments);
         this.state = {
-            popup: false
+            focus: false,
+            bomb:false,
+            flag:false
         }
     }
     render() {
-        let rd = 1;
-        // let rd = this.random(Data.length-1);
-        let popup = <Popup idx={this.props.idx}/>;
+        let num = this.props.idx===0?0:'';
+        let scr=this.state.focus===true?num:'';
         return (
-            <div className="inputWrap">
-                <input id={this.props.id} onFocus={this.popOpen.bind(this)} onBlur={this.popClose.bind(this)} />
-                {this.state.popup === false ? '' : popup}
+            <div className="box">
+                <i id={this.props.id} onClick={this.onfocus.bind(this)} >{scr}</i>
             </div>
         )
     }
-    random(n){
-        let rd = Math.floor((Math.random() * n));
-        return rd;
-    }
-    wright(n) {
-        let a = {};
-        let _n = n === undefined?this.random(Data.length):n;
-        a.text = Data[_n].name;
-        a.length = a.text.length;
-        
-        return a;
-    }
-    
-    popOpen(e) {
+    onfocus(e) {
+        const id = e.target.getAttribute('id');
         this.setState({
-            popup: true
+            focus:!this.state.focus
         })
-        // e.target.parentNode.classList.add('popup');
+        for (let i = (y / 2 - 1); i > -(y / 2); i--) {
+            for (let j = -(x / 2 - 1); j < (x / 2); j++) {
+                this.state.maps.push(j + 'x' + i + 'y');
+            }
+        }
     }
-    popClose(e) {
-        this.setState({
-            popup: false
-        })
-        // e.target.parentNode.classList.remove('popup');
-    }
+
 }
 
-class Popup extends React.Component {
-    render() {
-        return (
-            <div className="popup">
-                {Data[this.props.idx].mean}
-            </div>
-        )
-    }
-}
+// class Popup extends React.Component {
+//     render() {
+//         return (
+//             <div className="popup">
+//                 {Data[this.props.idx].mean}
+//             </div>
+//         )
+//     }
+// }
 
-class Text extends React.Component {
-    constructor() {
-        super(...arguments);
-    }
-    render() {
-        // Data['안녕'];
-    }
-}
+// class Text extends React.Component {
+//     constructor() {
+//         super(...arguments);
+//     }
+//     render() {
+//         // Data['안녕'];
+//     }
+// }
 export default App;

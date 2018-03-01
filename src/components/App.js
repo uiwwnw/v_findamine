@@ -6,7 +6,7 @@ class App extends React.Component {
         super(...arguments);
         this.state = {
             start: true,
-            level: 5
+            level: 20
         }
     }
     render() {
@@ -36,28 +36,55 @@ class Box extends App {
         return obj;
     }
     click(e) {
+        if(e.which === 3){alert('ddd')}
         // const slt = [];
-        const id = this.id;
+        // console.log(
+        // console.log();
+        let sto;
+        const _this = this;
+        const id = e.target.id;
+        const idx = this.state.maps[e.target.id]===undefined?'':this.state.maps[e.target.id];
         const el = document.getElementById(id);
         // console.log(el)
-        const bomb = this.idx === 'B' ? false : true;
+        const bomb = idx === 'B' ? false : true;
         const xIdx = id.indexOf('x');
         const yIdx = id.indexOf('y');
         const pX = Number(id.substring(0, xIdx));
         const pY = Number(id.substring(xIdx + 1, yIdx));
         // console.log(this, bomb)
+        function rp(_pX, _pY) {
+            // console.log('d');
+            _pX === undefined?pX:_pX;
+            _pY === undefined?pY:_pY;
+            for (let j = -1; j < 2; j++) {
+                for (let k = -1; k < 2; k++) {
+                    console.log(Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y'));
+                    if (Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y') !== -1) {
+                        if (_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] !== 'B') {
+                            document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.add('active');
+                            document.getElementById((pX + j) + 'x' + (pY + k) + 'y').innerText = _this.state.maps[(pX + j) + 'x' + (pY + k) + 'y']===undefined?'':_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'];
+                            // console.log('i')
+                            if (_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] === undefined) {
+                                // rp(pX + j, pY + k);
+                            }
+                            delete _this.state.maps[(pX)+'x'+(pY)+'y'];
+                        }
+                    }
+                }
+            }
+        }
         if (!bomb) {
             el.innerHTML = '<i class="icon-bomb"></i>';
             // console.log(this);
         } else {
-            for (let j = -1; j < 2; j++) {
-                for (let k = -1; k < 2; k++) {
-                    document.getElementById((pX+j)+'x'+(pY+k)+'y').classList.add('active');
-                }
+            if(_this.state.maps[(pX)+'x'+(pY)+'y'] === undefined) {
+                rp();
             }
+            delete this.state.maps[(pX)+'x'+(pY)+'y'];
             el.classList.add('active');
-            el.innerText = e;
+            el.innerText = idx;
         }
+        // console.log(Object.keys(this.state.maps));
     }
     makeIdx() {
         let l = {};
@@ -80,8 +107,8 @@ class Box extends App {
             for (let j = -1; j < 2; j++) {
                 for (let k = -1; k < 2; k++) {
                     if(this.state.maps[(pX+j)+'x'+(pY+k)+'y']!=='B'){
-                        let num = (this.state.maps[(pX+j)+'x'+(pY+k)+'y']===null)?0:this.state.maps[(pX+j)+'x'+(pY+k)+'y'];
-                        // console.log(this.state.maps[(pX+j)+'x'+(pY+k)+'y']===null,(pX+j)+'x'+(pY+k)+'y')
+                        let num = (this.state.maps[(pX+j)+'x'+(pY+k)+'y']===undefined)?0:this.state.maps[(pX+j)+'x'+(pY+k)+'y'];
+                        // console.log(this.state.maps[(pX+j)+'x'+(pY+k)+'y']===undefined,(pX+j)+'x'+(pY+k)+'y')
                         this.state.maps[(pX+j)+'x'+(pY+k)+'y']=num + 1;
                     }
                 }
@@ -92,7 +119,7 @@ class Box extends App {
         // console.log(this.state.maps);
     }
     random(n) {
-        let rd = Math.floor((Math.random() * n)) === 0 ? 'B' : null;
+        let rd = Math.floor((Math.random() * n)) === 0 ? 'B' : undefined;
         return rd;
     }
     render() {
@@ -111,7 +138,9 @@ class Box extends App {
             <div className="map">
                 {this.state.ids.map((item, i) => {
                     return (
-                        <I key={item} id={item} idx={this.state.maps[item]} onClick={this.click} />
+                        <div key={item} className="box">
+                            <span onClick={this.click.bind(this)} id={item}></span>
+                        </div>
                     )
                 })}
             </div>
@@ -119,18 +148,18 @@ class Box extends App {
     }
 }
 
-class I extends Box {
-    render() {
-        return (
-            <div className="box">
-                <span id={this.props.id} onClick={this.onClick.bind(this)}></span>
-            </div>
-        )
-    }
-    onClick() {
-        this.props.onClick(this.props.idx);
-    }
+// class I extends Box {
+//     render() {
+//         return (
+//             <div className="box">
+//                 <span id={this.props.id} onClick={this.onClick.bind(this)}></span>
+//             </div>
+//         )
+//     }
+//     onClick() {
+//         this.props.onClick(this.props.idx);
+//     }
 
-}
+// }
 
 export default App;

@@ -10058,7 +10058,13 @@ var App = function (_React$Component) {
     function App() {
         _classCallCheck(this, App);
 
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+
+        _this.state = {
+            start: true,
+            level: 5
+        };
+        return _this;
     }
 
     _createClass(App, [{
@@ -10067,7 +10073,7 @@ var App = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(Box, { x: this.props.x, y: this.props.y })
+                _react2.default.createElement(Box, { x: 11, y: 11, level: this.state.level, style: this.state.start === true ? '' : 'display:none;', onClick: this.click })
             );
         }
     }]);
@@ -10084,15 +10090,87 @@ var Box = function (_App) {
         var _this2 = _possibleConstructorReturn(this, (Box.__proto__ || Object.getPrototypeOf(Box)).apply(this, arguments));
 
         _this2.state = {
-            maps: []
+            maps: {},
+            ids: [],
+            idx: []
         };
         return _this2;
     }
 
     _createClass(Box, [{
+        key: 'arrayToObj',
+        value: function arrayToObj(array, keyValueMap) {
+            var obj = {};
+            var len = array.length;
+            for (var i = 0; i < len; i++) {
+                obj[array[i]] = keyValueMap[i];
+            }
+            return obj;
+        }
+    }, {
+        key: 'click',
+        value: function click(e) {
+            // const slt = [];
+            var id = this.id;
+            var el = document.getElementById(id);
+            // console.log(el)
+            var bomb = this.idx === 'B' ? false : true;
+            var xIdx = id.indexOf('x');
+            var yIdx = id.indexOf('y');
+            var pX = Number(id.substring(0, xIdx));
+            var pY = Number(id.substring(xIdx + 1, yIdx));
+            // console.log(this, bomb)
+            if (!bomb) {
+                el.innerHTML = '<i class="icon-bomb"></i>';
+                // console.log(this);
+            } else {
+                for (var j = -1; j < 2; j++) {
+                    for (var k = -1; k < 2; k++) {
+                        document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.add('active');
+                    }
+                }
+                el.classList.add('active');
+                el.innerText = e;
+            }
+        }
+    }, {
+        key: 'makeIdx',
+        value: function makeIdx() {
+            var l = {};
+            for (var i = 0; i < Object.keys(this.state.maps).length; i++) {
+                var p = Object.values(this.state.maps).indexOf('B', i);
+                l[p] = Object.keys(this.state.maps)[p];
+            }
+            delete l[-1];
+
+            // console.log(l);
+            for (var _i = 0; _i < Object.keys(l).length; _i++) {
+                var id = Object.values(l)[_i];
+                // console.log(el)
+                // console.log(id);
+                var xIdx = id.indexOf('x');
+                var yIdx = id.indexOf('y');
+                var pX = Number(id.substring(0, xIdx));
+                var pY = Number(id.substring(xIdx + 1, yIdx));
+                // console.log(id)
+                for (var j = -1; j < 2; j++) {
+                    for (var k = -1; k < 2; k++) {
+                        if (this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
+                            var num = this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === null ? 0 : this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+                            // console.log(this.state.maps[(pX+j)+'x'+(pY+k)+'y']===null,(pX+j)+'x'+(pY+k)+'y')
+                            this.state.maps[pX + j + 'x' + (pY + k) + 'y'] = num + 1;
+                        }
+                    }
+                }
+            }
+            // this.state.maps['-5x5y']='aaaa';
+            // console.log(Object.keys(l).length);
+            // console.log(this.state.maps);
+        }
+    }, {
         key: 'random',
         value: function random(n) {
-            var rd = Math.floor(Math.random() * n);
+            var rd = Math.floor(Math.random() * n) === 0 ? 'B' : null;
             return rd;
         }
     }, {
@@ -10104,14 +10182,18 @@ var Box = function (_App) {
             var y = Number(this.props.y) + 1;
             for (var i = y / 2 - 1; i > -(y / 2); i--) {
                 for (var j = -(x / 2 - 1); j < x / 2; j++) {
-                    this.state.maps.push(j + 'x' + i + 'y');
+                    this.state.ids.push(j + 'x' + i + 'y');
+                    this.state.maps[j + 'x' + i + 'y'] = this.random(this.props.level);
                 }
             }
+            // console.log(this.state.ids.length);
+            // console.log(Object.keys(this.state.maps).length);
+            this.makeIdx();
             return _react2.default.createElement(
                 'div',
                 { className: 'map' },
-                this.state.maps.map(function (item, i) {
-                    return _react2.default.createElement(I, { key: i, id: item, idx: _this3.random(10) });
+                this.state.ids.map(function (item, i) {
+                    return _react2.default.createElement(I, { key: item, id: item, idx: _this3.state.maps[item], onClick: _this3.click });
                 })
             );
         }
@@ -10126,68 +10208,27 @@ var I = function (_Box) {
     function I() {
         _classCallCheck(this, I);
 
-        var _this4 = _possibleConstructorReturn(this, (I.__proto__ || Object.getPrototypeOf(I)).apply(this, arguments));
-
-        _this4.state = {
-            focus: false,
-            bomb: false,
-            flag: false
-        };
-        return _this4;
+        return _possibleConstructorReturn(this, (I.__proto__ || Object.getPrototypeOf(I)).apply(this, arguments));
     }
 
     _createClass(I, [{
         key: 'render',
         value: function render() {
-            var num = this.props.idx === 0 ? 0 : '';
-            var scr = this.state.focus === true ? num : '';
             return _react2.default.createElement(
                 'div',
                 { className: 'box' },
-                _react2.default.createElement(
-                    'i',
-                    { id: this.props.id, onClick: this.onfocus.bind(this) },
-                    scr
-                )
+                _react2.default.createElement('span', { id: this.props.id, onClick: this.onClick.bind(this) })
             );
         }
     }, {
-        key: 'onfocus',
-        value: function onfocus(e) {
-            var id = e.target.getAttribute('id');
-            this.setState({
-                focus: !this.state.focus
-            });
-            for (var i = y / 2 - 1; i > -(y / 2); i--) {
-                for (var j = -(x / 2 - 1); j < x / 2; j++) {
-                    this.state.maps.push(j + 'x' + i + 'y');
-                }
-            }
+        key: 'onClick',
+        value: function onClick() {
+            this.props.onClick(this.props.idx);
         }
     }]);
 
     return I;
 }(Box);
-
-// class Popup extends React.Component {
-//     render() {
-//         return (
-//             <div className="popup">
-//                 {Data[this.props.idx].mean}
-//             </div>
-//         )
-//     }
-// }
-
-// class Text extends React.Component {
-//     constructor() {
-//         super(...arguments);
-//     }
-//     render() {
-//         // Data['안녕'];
-//     }
-// }
-
 
 exports.default = App;
 
@@ -10286,7 +10327,7 @@ var _App2 = _interopRequireDefault(_App);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-(0, _reactDom.render)(_react2.default.createElement(_App2.default, { x: '11', y: '11' }), document.getElementById('root'));
+(0, _reactDom.render)(_react2.default.createElement(_App2.default, null), document.getElementById('root'));
 
 /***/ }),
 /* 92 */
@@ -11247,7 +11288,7 @@ exports = module.exports = __webpack_require__(51)(true);
 
 
 // module
-exports.push([module.i, ".daum {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n.map {\n  padding-top: .5%; }\n  .map:before {\n    float: left;\n    width: .5%;\n    margin-top: -.5%;\n    padding-top: 100%;\n    content: ''; }\n  .map:after {\n    display: block;\n    clear: both;\n    content: ''; }\n  .map .box {\n    position: relative;\n    float: left;\n    width: 8%;\n    margin: .5%;\n    padding-top: 8%;\n    background: #fff; }\n    .map .box i {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      padding: 0;\n      border: 0;\n      font-style: normal;\n      border-radius: 0;\n      text-align: center;\n      font-size: 20px;\n      font-size: 6vw;\n      box-sizing: border-box; }\n", "", {"version":3,"sources":["/Users/uiwwnwyoon/work/v_wordgame/src/src/spritesmith-generated/sprite.scss","/Users/uiwwnwyoon/work/v_wordgame/src/src/style.scss"],"names":[],"mappings":"AA4II;EAjBF,gDAAuB;EALvB,gCAjG6B;EAuF7B,aAvFoC;EA2FpC,cA3F2C,EAyHxC;;AAFD;EAjBF,gDAAuB;EALvB,gCAtFiC;EA4EjC,aA5EwC;EAgFxC,cAhF+C,EA8G5C;;AAFD;EAjBF,gDAAuB;EALvB,mCA3EmC;EAiEnC,aAjE0C;EAqE1C,cArEiD,EAmG9C;;AAFD;EAjBF,gDAAuB;EALvB,mCAhEkC;EAsDlC,aAtDyC;EA0DzC,cA1DgD,EAwF7C;;AAFD;EAjBF,gDAAuB;EALvB,6BArDwB;EA2CxB,aA3C+B;EA+C/B,cA/CsC,EA6EnC;;AAFD;EAjBF,gDAAuB;EALvB,gCA1CgC;EAgChC,aAhCuC;EAoCvC,cApC8C,EAkE3C;;AC3IL;EACI,UAAS;EACT,WAAU;EACV,iBAAgB,EACnB;;AAED;EACI,iBAAgB,EA8CnB;EA/CD;IAGQ,YAAW;IACX,WAAU;IACV,iBAAgB;IAChB,kBAAiB;IACjB,YAAW,EACd;EARL;IAUQ,eAAc;IACd,YAAW;IACX,YAAW,EACd;EAbL;IAiBQ,mBAAkB;IAClB,YAAW;IACX,UAAS;IACT,YAAW;IACX,gBAAe;IACf,iBAAgB,EAgBnB;IAtCL;MAwBY,mBAAkB;MAClB,OAAM;MACN,QAAO;MACP,YAAW;MACX,aAAY;MACZ,WAAU;MACV,UAAS;MACT,mBAAkB;MAClB,iBAAgB;MAChB,mBAAkB;MAClB,gBAAe;MACf,eAAc;MACd,uBAAsB,EACzB","file":"style.scss","sourcesContent":["// SCSS variables are information about icon's compiled state, stored under its original file name\n//\n// .icon-home {\n//   width: $icon-home-width;\n// }\n//\n// The large array-like variables contain all information about a single icon\n// $icon-home: x y offset_x offset_y width height total_width total_height image_path;\n//\n// At the bottom of this section, we provide information about the spritesheet itself\n// $spritesheet: width height image $spritesheet-sprites;\n$daum-name: 'daum';\n$daum-x: 0px;\n$daum-y: 149px;\n$daum-offset-x: 0px;\n$daum-offset-y: -149px;\n$daum-width: 149px;\n$daum-height: 148px;\n$daum-total-width: 446px;\n$daum-total-height: 297px;\n$daum-image: './spritesmith-generated/sprite.png';\n$daum: (0px, 149px, 0px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'daum', );\n$facebook-name: 'facebook';\n$facebook-x: 298px;\n$facebook-y: 0px;\n$facebook-offset-x: -298px;\n$facebook-offset-y: 0px;\n$facebook-width: 148px;\n$facebook-height: 149px;\n$facebook-total-width: 446px;\n$facebook-total-height: 297px;\n$facebook-image: './spritesmith-generated/sprite.png';\n$facebook: (298px, 0px, -298px, 0px, 148px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'facebook', );\n$kakao-name: 'kakao';\n$kakao-x: 149px;\n$kakao-y: 149px;\n$kakao-offset-x: -149px;\n$kakao-offset-y: -149px;\n$kakao-width: 149px;\n$kakao-height: 148px;\n$kakao-total-width: 446px;\n$kakao-total-height: 297px;\n$kakao-image: './spritesmith-generated/sprite.png';\n$kakao: (149px, 149px, -149px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'kakao', );\n$line-name: 'line';\n$line-x: 298px;\n$line-y: 149px;\n$line-offset-x: -298px;\n$line-offset-y: -149px;\n$line-width: 148px;\n$line-height: 148px;\n$line-total-width: 446px;\n$line-total-height: 297px;\n$line-image: './spritesmith-generated/sprite.png';\n$line: (298px, 149px, -298px, -149px, 148px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'line', );\n$mail-name: 'mail';\n$mail-x: 0px;\n$mail-y: 0px;\n$mail-offset-x: 0px;\n$mail-offset-y: 0px;\n$mail-width: 149px;\n$mail-height: 149px;\n$mail-total-width: 446px;\n$mail-total-height: 297px;\n$mail-image: './spritesmith-generated/sprite.png';\n$mail: (0px, 0px, 0px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'mail', );\n$twitter-name: 'twitter';\n$twitter-x: 149px;\n$twitter-y: 0px;\n$twitter-offset-x: -149px;\n$twitter-offset-y: 0px;\n$twitter-width: 149px;\n$twitter-height: 149px;\n$twitter-total-width: 446px;\n$twitter-total-height: 297px;\n$twitter-image: './spritesmith-generated/sprite.png';\n$twitter: (149px, 0px, -149px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'twitter', );\n$spritesheet-width: 446px;\n$spritesheet-height: 297px;\n$spritesheet-image: './spritesmith-generated/sprite.png';\n$spritesheet-sprites: ($daum, $facebook, $kakao, $line, $mail, $twitter, );\n$spritesheet: (446px, 297px, './spritesmith-generated/sprite.png', $spritesheet-sprites, );\n\n// The provided mixins are intended to be used with the array-like variables\n//\n// .icon-home {\n//   @include sprite-width($icon-home);\n// }\n//\n// .icon-email {\n//   @include sprite($icon-email);\n// }\n//\n// Example usage in HTML:\n//\n// `display: block` sprite:\n// <div class=\"icon-home\"></div>\n//\n// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:\n//\n// // CSS\n// .icon {\n//   display: inline-block;\n// }\n//\n// // HTML\n// <i class=\"icon icon-home\"></i>\n@mixin sprite-width($sprite) {\n  width: nth($sprite, 5);\n}\n\n@mixin sprite-height($sprite) {\n  height: nth($sprite, 6);\n}\n\n@mixin sprite-position($sprite) {\n  $sprite-offset-x: nth($sprite, 3);\n  $sprite-offset-y: nth($sprite, 4);\n  background-position: $sprite-offset-x  $sprite-offset-y;\n}\n\n@mixin sprite-image($sprite) {\n  $sprite-image: nth($sprite, 9);\n  background-image: url(#{$sprite-image});\n}\n\n@mixin sprite($sprite) {\n  @include sprite-image($sprite);\n  @include sprite-position($sprite);\n  @include sprite-width($sprite);\n  @include sprite-height($sprite);\n}\n\n// The `sprites` mixin generates identical output to the CSS template\n//   but can be overridden inside of SCSS\n//\n// @include sprites($spritesheet-sprites);\n@mixin sprites($sprites) {\n  @each $sprite in $sprites {\n    $sprite-name: nth($sprite, 10);\n    .#{$sprite-name} {\n      @include sprite($sprite);\n    }\n  }\n}\n","@charset \"UTF-8\";\n@import \"./spritesmith-generated/sprite\";\n@include sprites($spritesheet-sprites);\nbody {\n    margin: 0;\n    padding: 0;\n    background: #000;\n}\n\n.map {\n    padding-top: .5%;\n    &:before {\n        float: left;\n        width: .5%;\n        margin-top: -.5%;\n        padding-top: 100%;\n        content: '';\n    }\n    &:after {\n        display: block;\n        clear: both;\n        content: '';\n    } // .inputItem {\n    // float: left;\n    // }\n    .box {\n        position: relative;\n        float: left;\n        width: 8%;\n        margin: .5%;\n        padding-top: 8%;\n        background: #fff;\n        i {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            padding: 0;\n            border: 0;\n            font-style: normal;\n            border-radius: 0;\n            text-align: center;\n            font-size: 20px;\n            font-size: 6vw;\n            box-sizing: border-box;\n        }\n    }\n    // .popup {\n    //     z-index: 2;\n    //     position: fixed; // width: 400px;\n    //     // margin-left: -50%;\n    //     padding: 5%;\n    //     color: #fff;\n    //     background: rgba(0, 0, 0, .7);\n    // }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ".daum {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n.map {\n  padding-top: .5%; }\n  .map:before {\n    float: left;\n    width: .5%;\n    margin-top: -.5%;\n    padding-top: 100%;\n    content: ''; }\n  .map:after {\n    display: block;\n    clear: both;\n    content: ''; }\n  .map .box {\n    position: relative;\n    float: left;\n    width: 8%;\n    margin: .5%;\n    padding-top: 8%;\n    background: #fff; }\n    .map .box span {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      padding: 0;\n      border: 0;\n      font-style: normal;\n      cursor: pointer;\n      border-radius: 0;\n      text-align: center;\n      font-size: 20px;\n      font-size: 6vw;\n      box-sizing: border-box; }\n      .map .box span[data-bomb=\"true\"]:before {\n        z-index: 100;\n        position: fixed;\n        top: 0;\n        right: 0;\n        bottom: 0;\n        left: 0;\n        background: red;\n        content: \"\"; }\n      .map .box span.active {\n        color: #fff;\n        cursor: default;\n        background: #000; }\n", "", {"version":3,"sources":["/Users/uiwwnwyoon/work/v_wordgame/src/src/spritesmith-generated/sprite.scss","/Users/uiwwnwyoon/work/v_wordgame/src/src/style.scss"],"names":[],"mappings":"AA4II;EAjBF,gDAAuB;EALvB,gCAjG6B;EAuF7B,aAvFoC;EA2FpC,cA3F2C,EAyHxC;;AAFD;EAjBF,gDAAuB;EALvB,gCAtFiC;EA4EjC,aA5EwC;EAgFxC,cAhF+C,EA8G5C;;AAFD;EAjBF,gDAAuB;EALvB,mCA3EmC;EAiEnC,aAjE0C;EAqE1C,cArEiD,EAmG9C;;AAFD;EAjBF,gDAAuB;EALvB,mCAhEkC;EAsDlC,aAtDyC;EA0DzC,cA1DgD,EAwF7C;;AAFD;EAjBF,gDAAuB;EALvB,6BArDwB;EA2CxB,aA3C+B;EA+C/B,cA/CsC,EA6EnC;;AAFD;EAjBF,gDAAuB;EALvB,gCA1CgC;EAgChC,aAhCuC;EAoCvC,cApC8C,EAkE3C;;AC3IL;EACI,UAAS;EACT,WAAU;EACV,iBAAgB,EACnB;;AAED;EACI,iBAAgB,EAkEnB;EAnED;IAGQ,YAAW;IACX,WAAU;IACV,iBAAgB;IAChB,kBAAiB;IACjB,YAAW,EACd;EARL;IAUQ,eAAc;IACd,YAAW;IACX,YAAW,EACd;EAbL;IAiBQ,mBAAkB;IAClB,YAAW;IACX,UAAS;IACT,YAAW;IACX,gBAAe;IACf,iBAAgB,EAoCnB;IA1DL;MAwBY,mBAAkB;MAClB,OAAM;MACN,QAAO;MACP,YAAW;MACX,aAAY;MACZ,WAAU;MACV,UAAS;MACT,mBAAkB;MAClB,gBAAe;MACf,iBAAgB;MAChB,mBAAkB;MAClB,gBAAe;MACf,eAAc;MACd,uBAAsB,EAoBzB;MAzDT;QAyCoB,aAAY;QACZ,gBAAe;QACf,OAAM;QACN,SAAQ;QACR,UAAS;QACT,QAAO;QACP,gBAAe;QACf,YAAW,EACd;MAjDjB;QAqDgB,YAAW;QACX,gBAAe;QACf,iBAAgB,EACnB","file":"style.scss","sourcesContent":["// SCSS variables are information about icon's compiled state, stored under its original file name\n//\n// .icon-home {\n//   width: $icon-home-width;\n// }\n//\n// The large array-like variables contain all information about a single icon\n// $icon-home: x y offset_x offset_y width height total_width total_height image_path;\n//\n// At the bottom of this section, we provide information about the spritesheet itself\n// $spritesheet: width height image $spritesheet-sprites;\n$daum-name: 'daum';\n$daum-x: 0px;\n$daum-y: 149px;\n$daum-offset-x: 0px;\n$daum-offset-y: -149px;\n$daum-width: 149px;\n$daum-height: 148px;\n$daum-total-width: 446px;\n$daum-total-height: 297px;\n$daum-image: './spritesmith-generated/sprite.png';\n$daum: (0px, 149px, 0px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'daum', );\n$facebook-name: 'facebook';\n$facebook-x: 298px;\n$facebook-y: 0px;\n$facebook-offset-x: -298px;\n$facebook-offset-y: 0px;\n$facebook-width: 148px;\n$facebook-height: 149px;\n$facebook-total-width: 446px;\n$facebook-total-height: 297px;\n$facebook-image: './spritesmith-generated/sprite.png';\n$facebook: (298px, 0px, -298px, 0px, 148px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'facebook', );\n$kakao-name: 'kakao';\n$kakao-x: 149px;\n$kakao-y: 149px;\n$kakao-offset-x: -149px;\n$kakao-offset-y: -149px;\n$kakao-width: 149px;\n$kakao-height: 148px;\n$kakao-total-width: 446px;\n$kakao-total-height: 297px;\n$kakao-image: './spritesmith-generated/sprite.png';\n$kakao: (149px, 149px, -149px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'kakao', );\n$line-name: 'line';\n$line-x: 298px;\n$line-y: 149px;\n$line-offset-x: -298px;\n$line-offset-y: -149px;\n$line-width: 148px;\n$line-height: 148px;\n$line-total-width: 446px;\n$line-total-height: 297px;\n$line-image: './spritesmith-generated/sprite.png';\n$line: (298px, 149px, -298px, -149px, 148px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'line', );\n$mail-name: 'mail';\n$mail-x: 0px;\n$mail-y: 0px;\n$mail-offset-x: 0px;\n$mail-offset-y: 0px;\n$mail-width: 149px;\n$mail-height: 149px;\n$mail-total-width: 446px;\n$mail-total-height: 297px;\n$mail-image: './spritesmith-generated/sprite.png';\n$mail: (0px, 0px, 0px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'mail', );\n$twitter-name: 'twitter';\n$twitter-x: 149px;\n$twitter-y: 0px;\n$twitter-offset-x: -149px;\n$twitter-offset-y: 0px;\n$twitter-width: 149px;\n$twitter-height: 149px;\n$twitter-total-width: 446px;\n$twitter-total-height: 297px;\n$twitter-image: './spritesmith-generated/sprite.png';\n$twitter: (149px, 0px, -149px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'twitter', );\n$spritesheet-width: 446px;\n$spritesheet-height: 297px;\n$spritesheet-image: './spritesmith-generated/sprite.png';\n$spritesheet-sprites: ($daum, $facebook, $kakao, $line, $mail, $twitter, );\n$spritesheet: (446px, 297px, './spritesmith-generated/sprite.png', $spritesheet-sprites, );\n\n// The provided mixins are intended to be used with the array-like variables\n//\n// .icon-home {\n//   @include sprite-width($icon-home);\n// }\n//\n// .icon-email {\n//   @include sprite($icon-email);\n// }\n//\n// Example usage in HTML:\n//\n// `display: block` sprite:\n// <div class=\"icon-home\"></div>\n//\n// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:\n//\n// // CSS\n// .icon {\n//   display: inline-block;\n// }\n//\n// // HTML\n// <i class=\"icon icon-home\"></i>\n@mixin sprite-width($sprite) {\n  width: nth($sprite, 5);\n}\n\n@mixin sprite-height($sprite) {\n  height: nth($sprite, 6);\n}\n\n@mixin sprite-position($sprite) {\n  $sprite-offset-x: nth($sprite, 3);\n  $sprite-offset-y: nth($sprite, 4);\n  background-position: $sprite-offset-x  $sprite-offset-y;\n}\n\n@mixin sprite-image($sprite) {\n  $sprite-image: nth($sprite, 9);\n  background-image: url(#{$sprite-image});\n}\n\n@mixin sprite($sprite) {\n  @include sprite-image($sprite);\n  @include sprite-position($sprite);\n  @include sprite-width($sprite);\n  @include sprite-height($sprite);\n}\n\n// The `sprites` mixin generates identical output to the CSS template\n//   but can be overridden inside of SCSS\n//\n// @include sprites($spritesheet-sprites);\n@mixin sprites($sprites) {\n  @each $sprite in $sprites {\n    $sprite-name: nth($sprite, 10);\n    .#{$sprite-name} {\n      @include sprite($sprite);\n    }\n  }\n}\n","@charset \"UTF-8\";\n@import \"./spritesmith-generated/sprite\";\n@include sprites($spritesheet-sprites);\nbody {\n    margin: 0;\n    padding: 0;\n    background: #000;\n}\n\n.map {\n    padding-top: .5%;\n    &:before {\n        float: left;\n        width: .5%;\n        margin-top: -.5%;\n        padding-top: 100%;\n        content: '';\n    }\n    &:after {\n        display: block;\n        clear: both;\n        content: '';\n    } // .inputItem {\n    // float: left;\n    // }\n    .box {\n        position: relative;\n        float: left;\n        width: 8%;\n        margin: .5%;\n        padding-top: 8%;\n        background: #fff;\n        span {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            padding: 0;\n            border: 0;\n            font-style: normal;\n            cursor: pointer;\n            border-radius: 0;\n            text-align: center;\n            font-size: 20px;\n            font-size: 6vw;\n            box-sizing: border-box;\n\n            &[data-bomb=\"true\"] {\n                &:before {\n                    z-index: 100;\n                    position: fixed;\n                    top: 0;\n                    right: 0;\n                    bottom: 0;\n                    left: 0;\n                    background: red;\n                    content: \"\";\n                }\n            }\n\n            &.active {\n                color: #fff;\n                cursor: default;\n                background: #000;\n            }\n        }\n    }\n    // .popup {\n    //     z-index: 2;\n    //     position: fixed; // width: 400px;\n    //     // margin-left: -50%;\n    //     padding: 5%;\n    //     color: #fff;\n    //     background: rgba(0, 0, 0, .7);\n    // }\n}\n"],"sourceRoot":""}]);
 
 // exports
 

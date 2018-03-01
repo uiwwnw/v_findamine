@@ -30,7 +30,7 @@ body {
         margin: .5%;
         padding-top: 8%;
         background: #fff;
-        i {
+        span {
             position: absolute;
             top: 0;
             left: 0;
@@ -39,11 +39,31 @@ body {
             padding: 0;
             border: 0;
             font-style: normal;
+            cursor: pointer;
             border-radius: 0;
             text-align: center;
             font-size: 20px;
             font-size: 6vw;
             box-sizing: border-box;
+
+            &[data-bomb="true"] {
+                &:before {
+                    z-index: 100;
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    left: 0;
+                    background: red;
+                    content: "";
+                }
+            }
+
+            &.active {
+                color: #fff;
+                cursor: default;
+                background: #000;
+            }
         }
     }
     // .popup {

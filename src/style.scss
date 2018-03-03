@@ -1,13 +1,36 @@
 @charset "UTF-8";
 @import "./spritesmith-generated/sprite";
 @include sprites($spritesheet-sprites);
+html,body,#root,[data-reactroot] {
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+}
 body {
     margin: 0;
     padding: 0;
     background: #000;
 }
 
+[data-reactroot] {
+    text-align: center;
+
+    > * {
+        display: inline-block;
+        font-size: 15px;
+        vertical-align: middle;
+    }
+    
+    &:before {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        content: '';
+    }
+}
+
 #root {
+    &.win ,
     &.lose {
         @keyframes lose {
             0% {
@@ -32,12 +55,8 @@ body {
 }
 
 .startPack {
-    position: absolute;
-    top: 50%;
-    left: 50%;
     width: 40%;
     height: 40%;
-    transform: translate(-50%, -50%);
     background: #fff;
 
     button {
@@ -48,7 +67,11 @@ body {
 
     input {
         display: block;
+        width: 100%;
+        height: 30px;
         margin-bottom: 10px;
+        text-align: center;
+        box-sizing: border-box;
         font-size: 15px;
     }
 }
@@ -56,18 +79,20 @@ body {
 .maps {
     @for $i from 5 through 30 {
         &[data-x="#{$i}"] {
-            padding-top: .5% * 11/$i;
+            width: 100vmin;
+            margin: auto;
+            padding-top: .5vmin * 11/$i;
 
             &:before {
-                width: .5% * 11/$i;;
-                margin-top: -.5% * 11/$i;;
+                width: .5vmin * 11/$i;;
+                margin-top: -.5vmin * 11/$i;;
             }
             .box {
-                width: 8% * 11/$i;;
-                margin: .5% * 11/$i;;
-                padding-top: 8% * 11/$i;;
+                width: 8vmin * 11/$i;;
+                margin: .5vmin * 11/$i;;
+                padding-top: 8vmin * 11/$i;;
                 font-size: 20px * 11/$i;;
-                font-size: 6vw * 11/$i;;
+                font-size: 6vmin * 11/$i;;
     
             }
         }

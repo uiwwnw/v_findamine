@@ -124,8 +124,8 @@ class Box extends App {
         }
     }
     check() {
-        console.log(this.props.startDate);
-        // console.log(this.state.complete.length)
+        // console.log(this.props.startDate);
+        console.log(this.state.complete.length)
         if(this.state.complete.length === 0){
             document.getElementById('root').classList.add('win');
             this.setState({
@@ -141,9 +141,8 @@ class Box extends App {
             return false;
         }
         const el = document.getElementById(id);
-        const num =el.getAttribute('data-bomb-index');
-        if(num!==undefined) {
-            this.state.complete.splice(num,0, id);
+        if(this.state.bomb.indexOf(id)!==-1) {
+            this.state.complete.push(id);
         }
         (el.classList.contains('markFlag'))&&(el.classList.remove('markFlag'));
         (el.classList.contains('markBomb'))&&(el.classList.remove('markBomb'));
@@ -157,11 +156,10 @@ class Box extends App {
             return false;
         }
         const el = document.getElementById(id);
-        const num =el.getAttribute('data-bomb-index');
         el.classList.add('markFlag');
         el.innerHTML = '<i class="icon-flag"></i>';
-        if(num!==undefined) {
-            this.state.complete.splice(num,0, id);
+        if(this.state.bomb.indexOf(id)!==-1) {
+            this.state.complete.push(id);
         }
         // console.log(this.state.complete,this.state.complete.length);
     }
@@ -173,11 +171,13 @@ class Box extends App {
             return false;
         }
         const el = document.getElementById(id);
-        const num = this.state.bomb.indexOf(id);
+        const num = this.state.complete.indexOf(id);
         el.classList.add('markBomb');
-        el.setAttribute('data-bomb-index', num);
+        // el.setAttribute('data-bomb-index', num);
         el.innerHTML = '<i class="icon-bomb"></i>';
-        this.state.complete.splice(num, 1);
+        if(num !== -1) {
+            this.state.complete.splice(num, 1);
+        }
         // console.log(this.state.complete,this.state.complete.length);
         this.check();
     }
@@ -210,7 +210,7 @@ class Box extends App {
             // console.log(pX,pY);
             for (let j = -1; j < 2; j++) {
                 for (let k = -1; k < 2; k++) {
-                    if (j !== 0 && k !== 0 || j === 0 && k === 0) {
+                    if (j === 0 && k === 0) {
                     } else {
                         if (Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y') !== -1 && !document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.contains('markBomb')&&!document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.contains('markFlag')) {
                             // console.log((pX + j) + 'x' + (pY + k) + 'y');
@@ -293,6 +293,9 @@ class Box extends App {
         // console.log(Object.keys(l).length);
         // console.log(this.state.maps);
     }
+    marking(e) {
+        e.target.parentNode.setAttribute('style','opacity:.3');
+    }
     random(n) {
         let rd = Math.floor((Math.random() * n)) === 0 ? 'B' : undefined;
         return rd;
@@ -304,7 +307,8 @@ class Box extends App {
             popup = 
             <div className="popup">
                 <p>짝짝짝 미션컴플릿!</p>
-                <p>총 {Math.ceil((new Date() - this.props.startDate)/1000)}초걸렸어요.</p>
+                <p>맵크기{this.props.x*this.props.y} 레벨 {this.props.level} 완료하는데 총 {Math.ceil((new Date() - this.props.startDate)/1000)}초걸렸어요.</p>
+                <p>{this.props.x*this.props.y/this.props.level*5 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
                 <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
                 <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
             </div>;
@@ -312,6 +316,7 @@ class Box extends App {
             popup = 
             <div className="popup">
                 <p>게임오버</p>
+                {/* <button onClick={this.marking.bind(this)}>정답확인</button> */}
                 <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
                 <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
             </div>;
@@ -350,6 +355,9 @@ class I extends Box {
             sto: false
         }
     }
+    out() {
+        clearTimeout(this.state.sto);
+    }
     up() {
         clearTimeout(this.state.sto);
         this.setState({
@@ -364,7 +372,7 @@ class I extends Box {
                 _this.setState({
                     hold: true
                 })
-            }, 1000);
+            }, 300);
         }
     }
     render() {
@@ -372,13 +380,13 @@ class I extends Box {
         if (this.state.hold) {
             popover =
                 <div className="popover">
-                    <span onMouseUp={this.props.markBomb.bind(this)} ><i className="icon-bomb"></i></span>
                     <span onMouseUp={this.props.markFlag.bind(this)}><i className="icon-flag"></i></span>
+                    <span onMouseUp={this.props.markBomb.bind(this)} ><i className="icon-bomb"></i></span>
                     <span onMouseUp={this.props.markRemove.bind(this)}><i className="icon-trash"></i></span>
                 </div>
         }
         return (
-            <div className="box" onMouseUp={this.up.bind(this)} onMouseDown={this.down.bind(this)} >
+            <div className="box" onMouseUp={this.up.bind(this)} onMouseDown={this.down.bind(this)} onMouseOut={this.out.bind(this)} >
                 <span className="map" id={this.props.id} onClick={this.props.onClick.bind(this)}></span>
                 {popover}
             </div>

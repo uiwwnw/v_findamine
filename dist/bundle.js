@@ -10061,19 +10061,131 @@ var App = function (_React$Component) {
         var _this2 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
 
         _this2.state = {
-            start: true,
-            level: 20
+            start: false,
+            startDate: 0,
+            level: 5,
+            x: 11,
+            y: 11
         };
         return _this2;
     }
 
     _createClass(App, [{
+        key: 'newstart',
+        value: function newstart() {
+            var _this = this;
+            this.setState({ start: false });
+
+            document.getElementById('root').classList.remove('lose');
+            document.getElementById('root').classList.remove('win');
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            var _this = this;
+            this.setState({ start: false });
+
+            document.getElementById('root').classList.remove('lose');
+            document.getElementById('root').classList.remove('win');
+            setTimeout(function () {
+                _this.start();
+            }, 1);
+        }
+    }, {
+        key: 'start',
+        value: function start() {
+            var date = new Date();
+            this.setState({
+                start: true,
+                startDate: date
+            });
+        }
+    }, {
+        key: 'changeLv',
+        value: function changeLv(e) {
+            if (e.target.value <= 0) {
+                var num = prompt('레벨이 너무 낮습니다. 레벨은 3~9 사이의 숫자를 입력해주세요~ 높을수록 쉬운 게임입니다~');
+                this.setState({
+                    level: num
+                });
+            } else if (e.target.value > 9) {
+                var _num = prompt('레벨이 너무 높습니다. 레벨은 3~9 사이의 숫자를 입력해주세요~ 높을수록 쉬운 게임입니다~');
+                this.setState({
+                    level: _num
+                });
+            } else {
+                this.setState({
+                    level: e.target.value
+                });
+            }
+        }
+    }, {
+        key: 'changeHo',
+        value: function changeHo(e) {
+            if (e.target.value < 6) {
+                var num = prompt('맵이 사이즈가 너무 작습니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
+                this.setState({
+                    x: num
+                });
+            } else if (e.target.value > 30) {
+                var _num2 = prompt('맵이 사이즈가 너무 큽니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
+                this.setState({
+                    x: _num2
+                });
+            } else {
+                this.setState({
+                    x: e.target.value
+                });
+            }
+        }
+    }, {
+        key: 'changeVe',
+        value: function changeVe(e) {
+            if (e.target.value < 6) {
+                var num = prompt('맵이 사이즈가 너무 작습니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
+                this.setState({
+                    y: num
+                });
+            } else if (e.target.value > 30) {
+                var _num3 = prompt('맵이 사이즈가 너무 큽니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
+                this.setState({
+                    y: _num3
+                });
+            } else {
+                this.setState({
+                    y: e.target.value
+                });
+            }
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var box = '';
+            var pack = '';
+            if (this.state.start) {
+                box = _react2.default.createElement(Box, { x: this.state.x, y: this.state.x, level: this.state.level, newstart: this.newstart.bind(this), restart: this.restart.bind(this), startDate: this.state.startDate });
+            } else {
+                pack = _react2.default.createElement(
+                    'div',
+                    { className: 'startPack' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.start.bind(this) },
+                        '\uC2DC\uC791\uD558\uAE30'
+                    ),
+                    '\uAC00\uB85C',
+                    _react2.default.createElement('input', { type: 'number', value: this.state.x, onChange: this.changeHo.bind(this) }),
+                    '\uC0C8\uB85C',
+                    _react2.default.createElement('input', { type: 'number', value: this.state.y, onChange: this.changeVe.bind(this) }),
+                    '\uB808\uBCA8',
+                    _react2.default.createElement('input', { type: 'number', value: this.state.level, onChange: this.changeLv.bind(this) })
+                );
+            }
             return _react2.default.createElement(
                 'div',
                 null,
-                _react2.default.createElement(Box, { x: 11, y: 11, level: this.state.level, style: this.state.start === true ? '' : 'display:none;', onClick: this.click })
+                box,
+                pack
             );
         }
     }]);
@@ -10091,32 +10203,88 @@ var Box = function (_App) {
 
         _this3.state = {
             maps: {},
-            ids: [],
-            idx: []
+            bomb: [],
+            complete: [],
+            end: false
         };
         return _this3;
     }
 
     _createClass(Box, [{
-        key: 'arrayToObj',
-        value: function arrayToObj(array, keyValueMap) {
-            var obj = {};
-            var len = array.length;
-            for (var i = 0; i < len; i++) {
-                obj[array[i]] = keyValueMap[i];
+        key: 'check',
+        value: function check() {
+            console.log(this.props.startDate);
+            // console.log(this.state.complete.length)
+            if (this.state.complete.length === 0) {
+                document.getElementById('root').classList.add('win');
+                this.setState({
+                    end: 'win'
+                });
+            };
+        }
+    }, {
+        key: 'markRemove',
+        value: function markRemove(e) {
+            this.check();
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            if (target.classList[1] === 'active') {
+                return false;
             }
-            return obj;
+            var el = document.getElementById(id);
+            var num = el.getAttribute('data-bomb-index');
+            if (num !== undefined) {
+                this.state.complete.splice(num, 0, id);
+            }
+            el.classList.contains('markFlag') && el.classList.remove('markFlag');
+            el.classList.contains('markBomb') && el.classList.remove('markBomb');
+            el.innerHTML = '';
+            // delete this.state.maps[id]; 
+        }
+    }, {
+        key: 'markFlag',
+        value: function markFlag(e) {
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            if (target.classList[1] === 'active') {
+                return false;
+            }
+            var el = document.getElementById(id);
+            var num = el.getAttribute('data-bomb-index');
+            el.classList.add('markFlag');
+            el.innerHTML = '<i class="icon-flag"></i>';
+            if (num !== undefined) {
+                this.state.complete.splice(num, 0, id);
+            }
+            // console.log(this.state.complete,this.state.complete.length);
+        }
+    }, {
+        key: 'markBomb',
+        value: function markBomb(e) {
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            // console.log(id);
+            if (target.classList[1] === 'active') {
+                return false;
+            }
+            var el = document.getElementById(id);
+            var num = this.state.bomb.indexOf(id);
+            el.classList.add('markBomb');
+            el.setAttribute('data-bomb-index', num);
+            el.innerHTML = '<i class="icon-bomb"></i>';
+            this.state.complete.splice(num, 1);
+            // console.log(this.state.complete,this.state.complete.length);
+            this.check();
         }
     }, {
         key: 'click',
         value: function click(e) {
-            if (e.which === 3) {
-                alert('ddd');
-            }
             // const slt = [];
-            // console.log(
-            // console.log();
-            var sto = void 0;
+            // console.log(e.target);
+            if (e.target.classList[1] === 'active' || e.target.classList[1] === 'markBomb' || e.target.classList[1] === 'markFlag') {
+                return false;
+            }
+            var list = [];
             var _this = this;
             var id = e.target.id;
             var idx = this.state.maps[e.target.id] === undefined ? '' : this.state.maps[e.target.id];
@@ -10127,31 +10295,58 @@ var Box = function (_App) {
             var yIdx = id.indexOf('y');
             var pX = Number(id.substring(0, xIdx));
             var pY = Number(id.substring(xIdx + 1, yIdx));
-            // console.log(this, bomb)
-            function rp(_pX, _pY) {
-                // console.log('d');
-                _pX === undefined ? pX : _pX;
-                _pY === undefined ? pY : _pY;
+            function rp(_pos) {
+                // console.log(_pX);
+                // let sto;
+                if (_pos !== undefined) {
+                    list.shift();
+                }
+                pX = _pos === undefined ? pX : _pos.x;
+                pY = _pos === undefined ? pY : _pos.y;
+                // console.log(_pX,_pY);
+                // console.log(pX,pY);
                 for (var j = -1; j < 2; j++) {
                     for (var k = -1; k < 2; k++) {
-                        console.log(Object.keys(_this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y'));
-                        if (Object.keys(_this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y') !== -1) {
-                            if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
-                                document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.add('active');
-                                document.getElementById(pX + j + 'x' + (pY + k) + 'y').innerText = _this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined ? '' : _this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
-                                // console.log('i')
-                                if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined) {
-                                    // rp(pX + j, pY + k);
+                        if (j !== 0 && k !== 0 || j === 0 && k === 0) {} else {
+                            if (Object.keys(_this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y') !== -1 && !document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.contains('markBomb') && !document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.contains('markFlag')) {
+                                // console.log((pX + j) + 'x' + (pY + k) + 'y');
+                                if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
+                                    document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.add('active');
+                                    document.getElementById(pX + j + 'x' + (pY + k) + 'y').innerText = _this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined ? '' : _this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+
+                                    if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined) {
+                                        // console.log(_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y']);
+                                        var pos = {};
+                                        pos.x = pX + j;
+                                        pos.y = pY + k;
+                                        list.push(pos);
+                                    }
+                                    delete _this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+                                    // console.log(Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y'))
+                                    // console.log(Object.keys(_this.state.maps).length)
                                 }
-                                delete _this.state.maps[pX + 'x' + pY + 'y'];
                             }
                         }
+                        // console.log();
+                    }
+                }
+                if (list.length <= 0) {
+                    return false;
+                } else {
+                    for (var i = 0; i < list.length; i++) {
+                        // console.log(list);
+                        new rp(list[i]);
                     }
                 }
             }
             if (!bomb) {
+                this.setState({
+                    end: 'lose'
+                });
+                document.getElementById('root').classList.add('lose');
                 el.innerHTML = '<i class="icon-bomb"></i>';
-                // console.log(this);
+                el.classList.add('active');
+                return false;
             } else {
                 if (_this.state.maps[pX + 'x' + pY + 'y'] === undefined) {
                     rp();
@@ -10160,21 +10355,23 @@ var Box = function (_App) {
                 el.classList.add('active');
                 el.innerText = idx;
             }
-            // console.log(Object.keys(this.state.maps));
+            this.check();
+            // console.log(Object.keys(this.state.maps).length);
         }
     }, {
         key: 'makeIdx',
         value: function makeIdx() {
-            var l = {};
+            // let l = {};
             for (var i = 0; i < Object.keys(this.state.maps).length; i++) {
                 var p = Object.values(this.state.maps).indexOf('B', i);
-                l[p] = Object.keys(this.state.maps)[p];
+                if (this.state.bomb.indexOf(Object.keys(this.state.maps)[p]) === -1 && Object.keys(this.state.maps)[p] !== undefined) {
+                    this.state.bomb.push(Object.keys(this.state.maps)[p]);
+                }
             }
-            delete l[-1];
+            this.state.complete = this.state.bomb;
 
-            // console.log(l);
-            for (var _i = 0; _i < Object.keys(l).length; _i++) {
-                var id = Object.values(l)[_i];
+            for (var _i = 0; _i < this.state.bomb.length; _i++) {
+                var id = this.state.bomb[_i];
                 // console.log(el)
                 // console.log(id);
                 var xIdx = id.indexOf('x');
@@ -10184,7 +10381,7 @@ var Box = function (_App) {
                 // console.log(id)
                 for (var j = -1; j < 2; j++) {
                     for (var k = -1; k < 2; k++) {
-                        if (this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
+                        if (Object.keys(this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y') !== -1 && this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
                             var num = this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined ? 0 : this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
                             // console.log(this.state.maps[(pX+j)+'x'+(pY+k)+'y']===undefined,(pX+j)+'x'+(pY+k)+'y')
                             this.state.maps[pX + j + 'x' + (pY + k) + 'y'] = num + 1;
@@ -10207,27 +10404,76 @@ var Box = function (_App) {
         value: function render() {
             var _this4 = this;
 
+            var popup = '';
+            var maps = [];
+            if (this.state.end === 'win') {
+                popup = _react2.default.createElement(
+                    'div',
+                    { className: 'popup' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        '\uC9DD\uC9DD\uC9DD \uBBF8\uC158\uCEF4\uD50C\uB9BF!'
+                    ),
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        '\uCD1D ',
+                        Math.ceil((new Date() - this.props.startDate) / 1000),
+                        '\uCD08\uAC78\uB838\uC5B4\uC694.'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.props.restart.bind(this) },
+                        '\uB2E4\uC2DC\uC2DC\uC791\uD558\uAE30'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.props.newstart.bind(this) },
+                        '\uC0C8\uB85C\uC2DC\uC791\uD558\uAE30'
+                    )
+                );
+            } else if (this.state.end === 'lose') {
+                popup = _react2.default.createElement(
+                    'div',
+                    { className: 'popup' },
+                    _react2.default.createElement(
+                        'p',
+                        null,
+                        '\uAC8C\uC784\uC624\uBC84'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.props.restart.bind(this) },
+                        '\uB2E4\uC2DC\uC2DC\uC791\uD558\uAE30'
+                    ),
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.props.newstart.bind(this) },
+                        '\uC0C8\uB85C\uC2DC\uC791\uD558\uAE30'
+                    )
+                );
+            }
             var x = Number(this.props.x) + 1;
             var y = Number(this.props.y) + 1;
+            // console.log(Object.values(this.state.maps).length);
             for (var i = y / 2 - 1; i > -(y / 2); i--) {
                 for (var j = -(x / 2 - 1); j < x / 2; j++) {
-                    this.state.ids.push(j + 'x' + i + 'y');
+                    maps.push(j + 'x' + i + 'y');
                     this.state.maps[j + 'x' + i + 'y'] = this.random(this.props.level);
                 }
             }
             // console.log(this.state.ids.length);
-            // console.log(Object.keys(this.state.maps).length);
+            // console.log(Object.values(this.state.maps).length);
             this.makeIdx();
+            // console.log(Object.values(this.state.maps).length);
             return _react2.default.createElement(
                 'div',
-                { className: 'map' },
-                this.state.ids.map(function (item, i) {
-                    return _react2.default.createElement(
-                        'div',
-                        { key: item, className: 'box' },
-                        _react2.default.createElement('span', { onClick: _this4.click.bind(_this4), id: item })
-                    );
-                })
+                { className: 'maps', 'data-x': this.props.x, 'data-y': this.props.y },
+                maps.map(function (item, i) {
+                    return _react2.default.createElement(I, { key: item, markBomb: _this4.markBomb.bind(_this4), markFlag: _this4.markFlag.bind(_this4), markRemove: _this4.markRemove.bind(_this4), onClick: _this4.click.bind(_this4), id: item });
+                }),
+                popup
             );
         }
     }]);
@@ -10235,19 +10481,78 @@ var Box = function (_App) {
     return Box;
 }(App);
 
-// class I extends Box {
-//     render() {
-//         return (
-//             <div className="box">
-//                 <span id={this.props.id} onClick={this.onClick.bind(this)}></span>
-//             </div>
-//         )
-//     }
-//     onClick() {
-//         this.props.onClick(this.props.idx);
-//     }
+var I = function (_Box) {
+    _inherits(I, _Box);
 
-// }
+    function I() {
+        _classCallCheck(this, I);
+
+        var _this5 = _possibleConstructorReturn(this, (I.__proto__ || Object.getPrototypeOf(I)).apply(this, arguments));
+
+        _this5.state = {
+            hold: false,
+            sto: false
+        };
+        return _this5;
+    }
+
+    _createClass(I, [{
+        key: 'up',
+        value: function up() {
+            clearTimeout(this.state.sto);
+            this.setState({
+                hold: false
+            });
+        }
+    }, {
+        key: 'down',
+        value: function down() {
+            var end = document.getElementById('root').classList.contains('lose') === true || document.getElementById('root').classList.contains('win') === true ? true : false;
+            var _this = this;
+            if (!end) {
+                this.state.sto = setTimeout(function () {
+                    _this.setState({
+                        hold: true
+                    });
+                }, 1000);
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var popover = '';
+            if (this.state.hold) {
+                popover = _react2.default.createElement(
+                    'div',
+                    { className: 'popover' },
+                    _react2.default.createElement(
+                        'span',
+                        { onMouseUp: this.props.markBomb.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-bomb' })
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { onMouseUp: this.props.markFlag.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-flag' })
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { onMouseUp: this.props.markRemove.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-trash' })
+                    )
+                );
+            }
+            return _react2.default.createElement(
+                'div',
+                { className: 'box', onMouseUp: this.up.bind(this), onMouseDown: this.down.bind(this) },
+                _react2.default.createElement('span', { className: 'map', id: this.props.id, onClick: this.props.onClick.bind(this) }),
+                popover
+            );
+        }
+    }]);
+
+    return I;
+}(Box);
 
 exports.default = App;
 
@@ -11307,7 +11612,7 @@ exports = module.exports = __webpack_require__(51)(true);
 
 
 // module
-exports.push([module.i, ".daum {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n.map {\n  padding-top: .5%; }\n  .map:before {\n    float: left;\n    width: .5%;\n    margin-top: -.5%;\n    padding-top: 100%;\n    content: ''; }\n  .map:after {\n    display: block;\n    clear: both;\n    content: ''; }\n  .map .box {\n    position: relative;\n    float: left;\n    width: 8%;\n    margin: .5%;\n    padding-top: 8%;\n    background: #fff; }\n    .map .box span {\n      position: absolute;\n      top: 0;\n      left: 0;\n      width: 100%;\n      height: 100%;\n      padding: 0;\n      border: 0;\n      font-style: normal;\n      cursor: pointer;\n      border-radius: 0;\n      text-align: center;\n      font-size: 20px;\n      font-size: 6vw;\n      box-sizing: border-box; }\n      .map .box span[data-bomb=\"true\"]:before {\n        z-index: 100;\n        position: fixed;\n        top: 0;\n        right: 0;\n        bottom: 0;\n        left: 0;\n        background: red;\n        content: \"\"; }\n      .map .box span.active {\n        pointer-events: none;\n        color: #fff;\n        cursor: default;\n        background: #000; }\n", "", {"version":3,"sources":["/Users/uiwwnwyoon/work/v_wordgame/src/src/spritesmith-generated/sprite.scss","/Users/uiwwnwyoon/work/v_wordgame/src/src/style.scss"],"names":[],"mappings":"AA4II;EAjBF,gDAAuB;EALvB,gCAjG6B;EAuF7B,aAvFoC;EA2FpC,cA3F2C,EAyHxC;;AAFD;EAjBF,gDAAuB;EALvB,gCAtFiC;EA4EjC,aA5EwC;EAgFxC,cAhF+C,EA8G5C;;AAFD;EAjBF,gDAAuB;EALvB,mCA3EmC;EAiEnC,aAjE0C;EAqE1C,cArEiD,EAmG9C;;AAFD;EAjBF,gDAAuB;EALvB,mCAhEkC;EAsDlC,aAtDyC;EA0DzC,cA1DgD,EAwF7C;;AAFD;EAjBF,gDAAuB;EALvB,6BArDwB;EA2CxB,aA3C+B;EA+C/B,cA/CsC,EA6EnC;;AAFD;EAjBF,gDAAuB;EALvB,gCA1CgC;EAgChC,aAhCuC;EAoCvC,cApC8C,EAkE3C;;AC3IL;EACI,UAAS;EACT,WAAU;EACV,iBAAgB,EACnB;;AAED;EACI,iBAAgB,EAmEnB;EApED;IAGQ,YAAW;IACX,WAAU;IACV,iBAAgB;IAChB,kBAAiB;IACjB,YAAW,EACd;EARL;IAUQ,eAAc;IACd,YAAW;IACX,YAAW,EACd;EAbL;IAiBQ,mBAAkB;IAClB,YAAW;IACX,UAAS;IACT,YAAW;IACX,gBAAe;IACf,iBAAgB,EAqCnB;IA3DL;MAwBY,mBAAkB;MAClB,OAAM;MACN,QAAO;MACP,YAAW;MACX,aAAY;MACZ,WAAU;MACV,UAAS;MACT,mBAAkB;MAClB,gBAAe;MACf,iBAAgB;MAChB,mBAAkB;MAClB,gBAAe;MACf,eAAc;MACd,uBAAsB,EAqBzB;MA1DT;QAyCoB,aAAY;QACZ,gBAAe;QACf,OAAM;QACN,SAAQ;QACR,UAAS;QACT,QAAO;QACP,gBAAe;QACf,YAAW,EACd;MAjDjB;QAqDgB,qBAAoB;QACpB,YAAW;QACX,gBAAe;QACf,iBAAgB,EACnB","file":"style.scss","sourcesContent":["// SCSS variables are information about icon's compiled state, stored under its original file name\n//\n// .icon-home {\n//   width: $icon-home-width;\n// }\n//\n// The large array-like variables contain all information about a single icon\n// $icon-home: x y offset_x offset_y width height total_width total_height image_path;\n//\n// At the bottom of this section, we provide information about the spritesheet itself\n// $spritesheet: width height image $spritesheet-sprites;\n$daum-name: 'daum';\n$daum-x: 0px;\n$daum-y: 149px;\n$daum-offset-x: 0px;\n$daum-offset-y: -149px;\n$daum-width: 149px;\n$daum-height: 148px;\n$daum-total-width: 446px;\n$daum-total-height: 297px;\n$daum-image: './spritesmith-generated/sprite.png';\n$daum: (0px, 149px, 0px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'daum', );\n$facebook-name: 'facebook';\n$facebook-x: 298px;\n$facebook-y: 0px;\n$facebook-offset-x: -298px;\n$facebook-offset-y: 0px;\n$facebook-width: 148px;\n$facebook-height: 149px;\n$facebook-total-width: 446px;\n$facebook-total-height: 297px;\n$facebook-image: './spritesmith-generated/sprite.png';\n$facebook: (298px, 0px, -298px, 0px, 148px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'facebook', );\n$kakao-name: 'kakao';\n$kakao-x: 149px;\n$kakao-y: 149px;\n$kakao-offset-x: -149px;\n$kakao-offset-y: -149px;\n$kakao-width: 149px;\n$kakao-height: 148px;\n$kakao-total-width: 446px;\n$kakao-total-height: 297px;\n$kakao-image: './spritesmith-generated/sprite.png';\n$kakao: (149px, 149px, -149px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'kakao', );\n$line-name: 'line';\n$line-x: 298px;\n$line-y: 149px;\n$line-offset-x: -298px;\n$line-offset-y: -149px;\n$line-width: 148px;\n$line-height: 148px;\n$line-total-width: 446px;\n$line-total-height: 297px;\n$line-image: './spritesmith-generated/sprite.png';\n$line: (298px, 149px, -298px, -149px, 148px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'line', );\n$mail-name: 'mail';\n$mail-x: 0px;\n$mail-y: 0px;\n$mail-offset-x: 0px;\n$mail-offset-y: 0px;\n$mail-width: 149px;\n$mail-height: 149px;\n$mail-total-width: 446px;\n$mail-total-height: 297px;\n$mail-image: './spritesmith-generated/sprite.png';\n$mail: (0px, 0px, 0px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'mail', );\n$twitter-name: 'twitter';\n$twitter-x: 149px;\n$twitter-y: 0px;\n$twitter-offset-x: -149px;\n$twitter-offset-y: 0px;\n$twitter-width: 149px;\n$twitter-height: 149px;\n$twitter-total-width: 446px;\n$twitter-total-height: 297px;\n$twitter-image: './spritesmith-generated/sprite.png';\n$twitter: (149px, 0px, -149px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'twitter', );\n$spritesheet-width: 446px;\n$spritesheet-height: 297px;\n$spritesheet-image: './spritesmith-generated/sprite.png';\n$spritesheet-sprites: ($daum, $facebook, $kakao, $line, $mail, $twitter, );\n$spritesheet: (446px, 297px, './spritesmith-generated/sprite.png', $spritesheet-sprites, );\n\n// The provided mixins are intended to be used with the array-like variables\n//\n// .icon-home {\n//   @include sprite-width($icon-home);\n// }\n//\n// .icon-email {\n//   @include sprite($icon-email);\n// }\n//\n// Example usage in HTML:\n//\n// `display: block` sprite:\n// <div class=\"icon-home\"></div>\n//\n// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:\n//\n// // CSS\n// .icon {\n//   display: inline-block;\n// }\n//\n// // HTML\n// <i class=\"icon icon-home\"></i>\n@mixin sprite-width($sprite) {\n  width: nth($sprite, 5);\n}\n\n@mixin sprite-height($sprite) {\n  height: nth($sprite, 6);\n}\n\n@mixin sprite-position($sprite) {\n  $sprite-offset-x: nth($sprite, 3);\n  $sprite-offset-y: nth($sprite, 4);\n  background-position: $sprite-offset-x  $sprite-offset-y;\n}\n\n@mixin sprite-image($sprite) {\n  $sprite-image: nth($sprite, 9);\n  background-image: url(#{$sprite-image});\n}\n\n@mixin sprite($sprite) {\n  @include sprite-image($sprite);\n  @include sprite-position($sprite);\n  @include sprite-width($sprite);\n  @include sprite-height($sprite);\n}\n\n// The `sprites` mixin generates identical output to the CSS template\n//   but can be overridden inside of SCSS\n//\n// @include sprites($spritesheet-sprites);\n@mixin sprites($sprites) {\n  @each $sprite in $sprites {\n    $sprite-name: nth($sprite, 10);\n    .#{$sprite-name} {\n      @include sprite($sprite);\n    }\n  }\n}\n","@charset \"UTF-8\";\n@import \"./spritesmith-generated/sprite\";\n@include sprites($spritesheet-sprites);\nbody {\n    margin: 0;\n    padding: 0;\n    background: #000;\n}\n\n.map {\n    padding-top: .5%;\n    &:before {\n        float: left;\n        width: .5%;\n        margin-top: -.5%;\n        padding-top: 100%;\n        content: '';\n    }\n    &:after {\n        display: block;\n        clear: both;\n        content: '';\n    } // .inputItem {\n    // float: left;\n    // }\n    .box {\n        position: relative;\n        float: left;\n        width: 8%;\n        margin: .5%;\n        padding-top: 8%;\n        background: #fff;\n        span {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            padding: 0;\n            border: 0;\n            font-style: normal;\n            cursor: pointer;\n            border-radius: 0;\n            text-align: center;\n            font-size: 20px;\n            font-size: 6vw;\n            box-sizing: border-box;\n\n            &[data-bomb=\"true\"] {\n                &:before {\n                    z-index: 100;\n                    position: fixed;\n                    top: 0;\n                    right: 0;\n                    bottom: 0;\n                    left: 0;\n                    background: red;\n                    content: \"\";\n                }\n            }\n\n            &.active {\n                pointer-events: none;\n                color: #fff;\n                cursor: default;\n                background: #000;\n            }\n        }\n    }\n    // .popup {\n    //     z-index: 2;\n    //     position: fixed; // width: 400px;\n    //     // margin-left: -50%;\n    //     padding: 5%;\n    //     color: #fff;\n    //     background: rgba(0, 0, 0, .7);\n    // }\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ".daum {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n@keyframes lose {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n#root.lose:before {\n  z-index: 2;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.7);\n  animation: lose .8s;\n  content: \"\"; }\n\n.startPack {\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  width: 40%;\n  height: 40%;\n  transform: translate(-50%, -50%);\n  background: #fff; }\n  .startPack button {\n    display: block;\n    width: 100%;\n    font-size: 20px; }\n  .startPack input {\n    display: block;\n    margin-bottom: 10px;\n    font-size: 15px; }\n\n.maps[data-x=\"5\"] {\n  padding-top: 1.1%; }\n  .maps[data-x=\"5\"]:before {\n    width: 1.1%;\n    margin-top: -1.1%; }\n  .maps[data-x=\"5\"] .box {\n    width: 17.6%;\n    margin: 1.1%;\n    padding-top: 17.6%;\n    font-size: 44px;\n    font-size: 13.2vw; }\n\n.maps[data-x=\"6\"] {\n  padding-top: 0.91667%; }\n  .maps[data-x=\"6\"]:before {\n    width: 0.91667%;\n    margin-top: -0.91667%; }\n  .maps[data-x=\"6\"] .box {\n    width: 14.66667%;\n    margin: 0.91667%;\n    padding-top: 14.66667%;\n    font-size: 36.66667px;\n    font-size: 11vw; }\n\n.maps[data-x=\"7\"] {\n  padding-top: 0.78571%; }\n  .maps[data-x=\"7\"]:before {\n    width: 0.78571%;\n    margin-top: -0.78571%; }\n  .maps[data-x=\"7\"] .box {\n    width: 12.57143%;\n    margin: 0.78571%;\n    padding-top: 12.57143%;\n    font-size: 31.42857px;\n    font-size: 9.42857vw; }\n\n.maps[data-x=\"8\"] {\n  padding-top: 0.6875%; }\n  .maps[data-x=\"8\"]:before {\n    width: 0.6875%;\n    margin-top: -0.6875%; }\n  .maps[data-x=\"8\"] .box {\n    width: 11%;\n    margin: 0.6875%;\n    padding-top: 11%;\n    font-size: 27.5px;\n    font-size: 8.25vw; }\n\n.maps[data-x=\"9\"] {\n  padding-top: 0.61111%; }\n  .maps[data-x=\"9\"]:before {\n    width: 0.61111%;\n    margin-top: -0.61111%; }\n  .maps[data-x=\"9\"] .box {\n    width: 9.77778%;\n    margin: 0.61111%;\n    padding-top: 9.77778%;\n    font-size: 24.44444px;\n    font-size: 7.33333vw; }\n\n.maps[data-x=\"10\"] {\n  padding-top: 0.55%; }\n  .maps[data-x=\"10\"]:before {\n    width: 0.55%;\n    margin-top: -0.55%; }\n  .maps[data-x=\"10\"] .box {\n    width: 8.8%;\n    margin: 0.55%;\n    padding-top: 8.8%;\n    font-size: 22px;\n    font-size: 6.6vw; }\n\n.maps[data-x=\"11\"] {\n  padding-top: 0.5%; }\n  .maps[data-x=\"11\"]:before {\n    width: 0.5%;\n    margin-top: -0.5%; }\n  .maps[data-x=\"11\"] .box {\n    width: 8%;\n    margin: 0.5%;\n    padding-top: 8%;\n    font-size: 20px;\n    font-size: 6vw; }\n\n.maps[data-x=\"12\"] {\n  padding-top: 0.45833%; }\n  .maps[data-x=\"12\"]:before {\n    width: 0.45833%;\n    margin-top: -0.45833%; }\n  .maps[data-x=\"12\"] .box {\n    width: 7.33333%;\n    margin: 0.45833%;\n    padding-top: 7.33333%;\n    font-size: 18.33333px;\n    font-size: 5.5vw; }\n\n.maps[data-x=\"13\"] {\n  padding-top: 0.42308%; }\n  .maps[data-x=\"13\"]:before {\n    width: 0.42308%;\n    margin-top: -0.42308%; }\n  .maps[data-x=\"13\"] .box {\n    width: 6.76923%;\n    margin: 0.42308%;\n    padding-top: 6.76923%;\n    font-size: 16.92308px;\n    font-size: 5.07692vw; }\n\n.maps[data-x=\"14\"] {\n  padding-top: 0.39286%; }\n  .maps[data-x=\"14\"]:before {\n    width: 0.39286%;\n    margin-top: -0.39286%; }\n  .maps[data-x=\"14\"] .box {\n    width: 6.28571%;\n    margin: 0.39286%;\n    padding-top: 6.28571%;\n    font-size: 15.71429px;\n    font-size: 4.71429vw; }\n\n.maps[data-x=\"15\"] {\n  padding-top: 0.36667%; }\n  .maps[data-x=\"15\"]:before {\n    width: 0.36667%;\n    margin-top: -0.36667%; }\n  .maps[data-x=\"15\"] .box {\n    width: 5.86667%;\n    margin: 0.36667%;\n    padding-top: 5.86667%;\n    font-size: 14.66667px;\n    font-size: 4.4vw; }\n\n.maps[data-x=\"16\"] {\n  padding-top: 0.34375%; }\n  .maps[data-x=\"16\"]:before {\n    width: 0.34375%;\n    margin-top: -0.34375%; }\n  .maps[data-x=\"16\"] .box {\n    width: 5.5%;\n    margin: 0.34375%;\n    padding-top: 5.5%;\n    font-size: 13.75px;\n    font-size: 4.125vw; }\n\n.maps[data-x=\"17\"] {\n  padding-top: 0.32353%; }\n  .maps[data-x=\"17\"]:before {\n    width: 0.32353%;\n    margin-top: -0.32353%; }\n  .maps[data-x=\"17\"] .box {\n    width: 5.17647%;\n    margin: 0.32353%;\n    padding-top: 5.17647%;\n    font-size: 12.94118px;\n    font-size: 3.88235vw; }\n\n.maps[data-x=\"18\"] {\n  padding-top: 0.30556%; }\n  .maps[data-x=\"18\"]:before {\n    width: 0.30556%;\n    margin-top: -0.30556%; }\n  .maps[data-x=\"18\"] .box {\n    width: 4.88889%;\n    margin: 0.30556%;\n    padding-top: 4.88889%;\n    font-size: 12.22222px;\n    font-size: 3.66667vw; }\n\n.maps[data-x=\"19\"] {\n  padding-top: 0.28947%; }\n  .maps[data-x=\"19\"]:before {\n    width: 0.28947%;\n    margin-top: -0.28947%; }\n  .maps[data-x=\"19\"] .box {\n    width: 4.63158%;\n    margin: 0.28947%;\n    padding-top: 4.63158%;\n    font-size: 11.57895px;\n    font-size: 3.47368vw; }\n\n.maps[data-x=\"20\"] {\n  padding-top: 0.275%; }\n  .maps[data-x=\"20\"]:before {\n    width: 0.275%;\n    margin-top: -0.275%; }\n  .maps[data-x=\"20\"] .box {\n    width: 4.4%;\n    margin: 0.275%;\n    padding-top: 4.4%;\n    font-size: 11px;\n    font-size: 3.3vw; }\n\n.maps[data-x=\"21\"] {\n  padding-top: 0.2619%; }\n  .maps[data-x=\"21\"]:before {\n    width: 0.2619%;\n    margin-top: -0.2619%; }\n  .maps[data-x=\"21\"] .box {\n    width: 4.19048%;\n    margin: 0.2619%;\n    padding-top: 4.19048%;\n    font-size: 10.47619px;\n    font-size: 3.14286vw; }\n\n.maps[data-x=\"22\"] {\n  padding-top: 0.25%; }\n  .maps[data-x=\"22\"]:before {\n    width: 0.25%;\n    margin-top: -0.25%; }\n  .maps[data-x=\"22\"] .box {\n    width: 4%;\n    margin: 0.25%;\n    padding-top: 4%;\n    font-size: 10px;\n    font-size: 3vw; }\n\n.maps[data-x=\"23\"] {\n  padding-top: 0.23913%; }\n  .maps[data-x=\"23\"]:before {\n    width: 0.23913%;\n    margin-top: -0.23913%; }\n  .maps[data-x=\"23\"] .box {\n    width: 3.82609%;\n    margin: 0.23913%;\n    padding-top: 3.82609%;\n    font-size: 9.56522px;\n    font-size: 2.86957vw; }\n\n.maps[data-x=\"24\"] {\n  padding-top: 0.22917%; }\n  .maps[data-x=\"24\"]:before {\n    width: 0.22917%;\n    margin-top: -0.22917%; }\n  .maps[data-x=\"24\"] .box {\n    width: 3.66667%;\n    margin: 0.22917%;\n    padding-top: 3.66667%;\n    font-size: 9.16667px;\n    font-size: 2.75vw; }\n\n.maps[data-x=\"25\"] {\n  padding-top: 0.22%; }\n  .maps[data-x=\"25\"]:before {\n    width: 0.22%;\n    margin-top: -0.22%; }\n  .maps[data-x=\"25\"] .box {\n    width: 3.52%;\n    margin: 0.22%;\n    padding-top: 3.52%;\n    font-size: 8.8px;\n    font-size: 2.64vw; }\n\n.maps[data-x=\"26\"] {\n  padding-top: 0.21154%; }\n  .maps[data-x=\"26\"]:before {\n    width: 0.21154%;\n    margin-top: -0.21154%; }\n  .maps[data-x=\"26\"] .box {\n    width: 3.38462%;\n    margin: 0.21154%;\n    padding-top: 3.38462%;\n    font-size: 8.46154px;\n    font-size: 2.53846vw; }\n\n.maps[data-x=\"27\"] {\n  padding-top: 0.2037%; }\n  .maps[data-x=\"27\"]:before {\n    width: 0.2037%;\n    margin-top: -0.2037%; }\n  .maps[data-x=\"27\"] .box {\n    width: 3.25926%;\n    margin: 0.2037%;\n    padding-top: 3.25926%;\n    font-size: 8.14815px;\n    font-size: 2.44444vw; }\n\n.maps[data-x=\"28\"] {\n  padding-top: 0.19643%; }\n  .maps[data-x=\"28\"]:before {\n    width: 0.19643%;\n    margin-top: -0.19643%; }\n  .maps[data-x=\"28\"] .box {\n    width: 3.14286%;\n    margin: 0.19643%;\n    padding-top: 3.14286%;\n    font-size: 7.85714px;\n    font-size: 2.35714vw; }\n\n.maps[data-x=\"29\"] {\n  padding-top: 0.18966%; }\n  .maps[data-x=\"29\"]:before {\n    width: 0.18966%;\n    margin-top: -0.18966%; }\n  .maps[data-x=\"29\"] .box {\n    width: 3.03448%;\n    margin: 0.18966%;\n    padding-top: 3.03448%;\n    font-size: 7.58621px;\n    font-size: 2.27586vw; }\n\n.maps[data-x=\"30\"] {\n  padding-top: 0.18333%; }\n  .maps[data-x=\"30\"]:before {\n    width: 0.18333%;\n    margin-top: -0.18333%; }\n  .maps[data-x=\"30\"] .box {\n    width: 2.93333%;\n    margin: 0.18333%;\n    padding-top: 2.93333%;\n    font-size: 7.33333px;\n    font-size: 2.2vw; }\n\n.maps:before {\n  float: left;\n  padding-top: 100%;\n  content: ''; }\n\n.maps:after {\n  display: block;\n  clear: both;\n  content: ''; }\n\n.maps .box {\n  position: relative;\n  float: left;\n  background: #fff; }\n  .maps .box:hover {\n    background: #eee; }\n    .lose .maps .box:hover {\n      background: #fff; }\n  .maps .box .map {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    padding: 0;\n    border: 0;\n    font-style: normal;\n    cursor: pointer;\n    border-radius: 0;\n    text-align: center;\n    box-sizing: border-box; }\n    .lose .maps .box .map {\n      pointer-events: none; }\n    .maps .box .map.active {\n      color: #fff;\n      cursor: default;\n      background: #000; }\n      .lose .maps .box .map.active {\n        color: red; }\n    .maps .box .map i {\n      pointer-events: none; }\n  .maps .box .popover {\n    z-index: 2;\n    position: absolute;\n    top: -50%;\n    right: -30%;\n    bottom: -50%;\n    left: -30%; }\n    .maps .box .popover:before {\n      z-index: 1;\n      position: fixed;\n      top: 0;\n      right: 0;\n      bottom: 0;\n      left: 0;\n      background: #000;\n      opacity: .3;\n      content: \"\"; }\n    .maps .box .popover span {\n      z-index: 10;\n      position: relative;\n      display: block;\n      height: calc(100% / 3);\n      font-size: 80%;\n      background: #fff; }\n      .maps .box .popover span i {\n        display: block;\n        width: 100%;\n        height: 100%;\n        text-align: center; }\n      .maps .box .popover span:hover {\n        background: #eee; }\n\n.maps .popup {\n  z-index: 2;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 30%;\n  height: 30%;\n  margin: auto;\n  text-align: center;\n  color: #000;\n  background: #fff;\n  animation: popup 1s; }\n\n@keyframes popup {\n  0% {\n    opacity: 0;\n    transform: scale(0); }\n  100% {\n    opacity: 1;\n    transform: scale(1); } }\n", "", {"version":3,"sources":["/Users/uiwwnwyoon/work/v_wordgame/src/src/spritesmith-generated/sprite.scss","/Users/uiwwnwyoon/work/v_wordgame/src/src/style.scss"],"names":[],"mappings":"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","file":"style.scss","sourcesContent":["// SCSS variables are information about icon's compiled state, stored under its original file name\n//\n// .icon-home {\n//   width: $icon-home-width;\n// }\n//\n// The large array-like variables contain all information about a single icon\n// $icon-home: x y offset_x offset_y width height total_width total_height image_path;\n//\n// At the bottom of this section, we provide information about the spritesheet itself\n// $spritesheet: width height image $spritesheet-sprites;\n$daum-name: 'daum';\n$daum-x: 0px;\n$daum-y: 149px;\n$daum-offset-x: 0px;\n$daum-offset-y: -149px;\n$daum-width: 149px;\n$daum-height: 148px;\n$daum-total-width: 446px;\n$daum-total-height: 297px;\n$daum-image: './spritesmith-generated/sprite.png';\n$daum: (0px, 149px, 0px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'daum', );\n$facebook-name: 'facebook';\n$facebook-x: 298px;\n$facebook-y: 0px;\n$facebook-offset-x: -298px;\n$facebook-offset-y: 0px;\n$facebook-width: 148px;\n$facebook-height: 149px;\n$facebook-total-width: 446px;\n$facebook-total-height: 297px;\n$facebook-image: './spritesmith-generated/sprite.png';\n$facebook: (298px, 0px, -298px, 0px, 148px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'facebook', );\n$kakao-name: 'kakao';\n$kakao-x: 149px;\n$kakao-y: 149px;\n$kakao-offset-x: -149px;\n$kakao-offset-y: -149px;\n$kakao-width: 149px;\n$kakao-height: 148px;\n$kakao-total-width: 446px;\n$kakao-total-height: 297px;\n$kakao-image: './spritesmith-generated/sprite.png';\n$kakao: (149px, 149px, -149px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'kakao', );\n$line-name: 'line';\n$line-x: 298px;\n$line-y: 149px;\n$line-offset-x: -298px;\n$line-offset-y: -149px;\n$line-width: 148px;\n$line-height: 148px;\n$line-total-width: 446px;\n$line-total-height: 297px;\n$line-image: './spritesmith-generated/sprite.png';\n$line: (298px, 149px, -298px, -149px, 148px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'line', );\n$mail-name: 'mail';\n$mail-x: 0px;\n$mail-y: 0px;\n$mail-offset-x: 0px;\n$mail-offset-y: 0px;\n$mail-width: 149px;\n$mail-height: 149px;\n$mail-total-width: 446px;\n$mail-total-height: 297px;\n$mail-image: './spritesmith-generated/sprite.png';\n$mail: (0px, 0px, 0px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'mail', );\n$twitter-name: 'twitter';\n$twitter-x: 149px;\n$twitter-y: 0px;\n$twitter-offset-x: -149px;\n$twitter-offset-y: 0px;\n$twitter-width: 149px;\n$twitter-height: 149px;\n$twitter-total-width: 446px;\n$twitter-total-height: 297px;\n$twitter-image: './spritesmith-generated/sprite.png';\n$twitter: (149px, 0px, -149px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'twitter', );\n$spritesheet-width: 446px;\n$spritesheet-height: 297px;\n$spritesheet-image: './spritesmith-generated/sprite.png';\n$spritesheet-sprites: ($daum, $facebook, $kakao, $line, $mail, $twitter, );\n$spritesheet: (446px, 297px, './spritesmith-generated/sprite.png', $spritesheet-sprites, );\n\n// The provided mixins are intended to be used with the array-like variables\n//\n// .icon-home {\n//   @include sprite-width($icon-home);\n// }\n//\n// .icon-email {\n//   @include sprite($icon-email);\n// }\n//\n// Example usage in HTML:\n//\n// `display: block` sprite:\n// <div class=\"icon-home\"></div>\n//\n// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:\n//\n// // CSS\n// .icon {\n//   display: inline-block;\n// }\n//\n// // HTML\n// <i class=\"icon icon-home\"></i>\n@mixin sprite-width($sprite) {\n  width: nth($sprite, 5);\n}\n\n@mixin sprite-height($sprite) {\n  height: nth($sprite, 6);\n}\n\n@mixin sprite-position($sprite) {\n  $sprite-offset-x: nth($sprite, 3);\n  $sprite-offset-y: nth($sprite, 4);\n  background-position: $sprite-offset-x  $sprite-offset-y;\n}\n\n@mixin sprite-image($sprite) {\n  $sprite-image: nth($sprite, 9);\n  background-image: url(#{$sprite-image});\n}\n\n@mixin sprite($sprite) {\n  @include sprite-image($sprite);\n  @include sprite-position($sprite);\n  @include sprite-width($sprite);\n  @include sprite-height($sprite);\n}\n\n// The `sprites` mixin generates identical output to the CSS template\n//   but can be overridden inside of SCSS\n//\n// @include sprites($spritesheet-sprites);\n@mixin sprites($sprites) {\n  @each $sprite in $sprites {\n    $sprite-name: nth($sprite, 10);\n    .#{$sprite-name} {\n      @include sprite($sprite);\n    }\n  }\n}\n","@charset \"UTF-8\";\n@import \"./spritesmith-generated/sprite\";\n@include sprites($spritesheet-sprites);\nbody {\n    margin: 0;\n    padding: 0;\n    background: #000;\n}\n\n#root {\n    &.lose {\n        @keyframes lose {\n            0% {\n                opacity: 0;\n            }\n            100% {\n                opacity: 1;\n            }\n        }\n        &:before {\n            z-index: 2;\n            position: fixed;\n            top: 0;\n            right: 0;\n            bottom: 0;\n            left: 0;\n            background: rgba(0, 0, 0, .7);\n            animation: lose .8s;\n            content: \"\";\n        }\n    }\n}\n\n.startPack {\n    position: absolute;\n    top: 50%;\n    left: 50%;\n    width: 40%;\n    height: 40%;\n    transform: translate(-50%, -50%);\n    background: #fff;\n\n    button {\n        display: block;\n        width: 100%;\n        font-size: 20px;\n    }\n\n    input {\n        display: block;\n        margin-bottom: 10px;\n        font-size: 15px;\n    }\n}\n\n.maps {\n    @for $i from 5 through 30 {\n        &[data-x=\"#{$i}\"] {\n            padding-top: .5% * 11/$i;\n\n            &:before {\n                width: .5% * 11/$i;;\n                margin-top: -.5% * 11/$i;;\n            }\n            .box {\n                width: 8% * 11/$i;;\n                margin: .5% * 11/$i;;\n                padding-top: 8% * 11/$i;;\n                font-size: 20px * 11/$i;;\n                font-size: 6vw * 11/$i;;\n    \n            }\n        }\n    }\n    &:before {\n        float: left;\n        padding-top: 100%;\n        content: '';\n    }\n    &:after {\n        display: block;\n        clear: both;\n        content: '';\n    } // .inputItem {\n    // float: left;\n    // }\n    .box {\n        position: relative;\n        float: left;\n        background: #fff;\n        &:hover {\n            background: #eee;\n            .lose & {\n                background: #fff;\n            }\n        }\n        .map {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            padding: 0;\n            border: 0;\n            font-style: normal;\n            cursor: pointer;\n            border-radius: 0;\n            text-align: center;\n            box-sizing: border-box;\n\n            .lose & {\n                pointer-events: none;\n            }\n\n            &.active {\n                color: #fff;\n                cursor: default;\n                background: #000;\n\n                .lose & {\n                    color: red;\n                }\n            }\n\n            i {\n                pointer-events: none;\n            }\n        }\n        .popover {\n            z-index: 2;\n            position: absolute;\n            top: -50%;\n            right: -30%;\n            bottom: -50%;\n            left: -30%;\n            &:before {\n                z-index: 1;\n                position: fixed;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                left: 0;\n                background: #000;\n                opacity: .3;\n                content: \"\";\n            }\n            span {\n                z-index: 10;\n                position: relative;\n                display: block;\n                height: calc(100% / 3);\n                font-size: 80%;\n                background: #fff;\n\n                i {\n                    display: block;\n                    width: 100%;\n                    height: 100%;\n                    text-align: center;\n                }\n\n                &:hover {\n                    background: #eee;\n                }\n            }\n        }\n    }\n    .popup {\n        @keyframes popup {\n            0% {\n                opacity: 0;\n                transform: scale(0)\n            }\n            100% {\n                opacity: 1;\n                transform: scale(1)\n            }\n        }\n        z-index: 2;\n        position: absolute; // width: 400px;\n        // margin-left: -50%;\n        top: 0;\n        right: 0;\n        bottom: 0;\n        left: 0;\n        width: 30%;\n        height: 30%;\n        margin: auto;\n        text-align: center;\n        color: #000;\n        background: #fff;\n        animation: popup 1s;\n    }\n}\n"],"sourceRoot":""}]);
 
 // exports
 

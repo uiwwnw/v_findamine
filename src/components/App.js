@@ -39,57 +39,43 @@ class App extends React.Component {
         
     }
     changeLv(e) {
-        if(e.target.value <=0) {
-            const num  = prompt('레벨이 너무 낮습니다. 레벨은 3~9 사이의 숫자를 입력해주세요~ 높을수록 쉬운 게임입니다~');
-            this.setState({
-                level: num
-            })
-        } else if(e.target.value > 9) {
-            const num  = prompt('레벨이 너무 높습니다. 레벨은 3~9 사이의 숫자를 입력해주세요~ 높을수록 쉬운 게임입니다~');
-            this.setState({
-                level: num
-            })
-        } else {
-            this.setState({
-                level: e.target.value
-            })
+        let num = prompt('3~9 중 입력해주세요~ 높을수록 어렵습니다.');
+        if(num > 9) {
+            num = 9;
+        } else if(num < 3) {
+            num = 3;
         }
+        this.setState({
+            level: num
+        })
     }
     changeHo(e) {
-        if(e.target.value <6) {
-            const num  = prompt('맵이 사이즈가 너무 작습니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
-            this.setState({
-                x: num
-            })
-            
-        } else if(e.target.value > 30) {
-            const num  = prompt('맵이 사이즈가 너무 큽니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
-            this.setState({
-                x: num
-            })
-        } else {
-            this.setState({
-                x: e.target.value
-            })
+        let num = prompt('7~31 중 홀수를 입력해주세요~');
+        if(num%2===0) {
+            num = num-1;
         }
+        if(num > 31) {
+            num = 31;
+        } else if(num < 7) {
+            num = 7;
+        }
+        this.setState({
+            x: num
+        })
     }
     changeVe(e) {
-        if(e.target.value < 6) {
-            const num  = prompt('맵이 사이즈가 너무 작습니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
-            this.setState({
-                y: num
-            })
-            
-        } else if(e.target.value > 30) {
-            const num  = prompt('맵이 사이즈가 너무 큽니다. 맵은 6~30 사이의 숫자를 입력해주세요~');
-            this.setState({
-                y: num
-            })
-        } else {
-            this.setState({
-                y: e.target.value
-            })
+        let num = prompt('7~31 중 홀수를 입력해주세요~');
+        if(num%2===0) {
+            num = num-1;
         }
+        if(num > 31) {
+            num = 31;
+        } else if(num < 7) {
+            num = 7;
+        }
+        this.setState({
+            y: num
+        })
     }
     render() {
         let box = '';
@@ -100,9 +86,9 @@ class App extends React.Component {
             pack = 
             <div className="startPack">
                 <button onClick={this.start.bind(this)} >시작하기</button>
-                가로<input type="number" value={this.state.x} onChange={this.changeHo.bind(this)} />
-                새로<input type="number" value={this.state.y} onChange={this.changeVe.bind(this)} />
-                레벨<input type="number" value={this.state.level} onChange={this.changeLv.bind(this)} />
+                가로<input type="number" maxLength="2" value={this.state.x} readOnly="readonly" onClick={this.changeHo.bind(this)} />
+                새로<input type="number" maxLength="2" value={this.state.y} readOnly="readonly" onClick={this.changeVe.bind(this)} />
+                레벨<input type="number" maxLength="1" value={this.state.level} readOnly="readonly" onClick={this.changeLv.bind(this)} />
                 <sub>조작법: 클릭시 열림, 홀드시 매뉴</sub>
             </div>;
         }
@@ -127,9 +113,9 @@ class Box extends App {
     }
     check() {
         // console.log(this.props.startDate);
-        // console.log(this.state.complete)
-        // console.log(this.state.bomb)
-        if(this.state.complete.length === 0){
+        // console.log(this.state.bomb.length)
+        // console.log()
+        if(this.state.complete.length === 0 && this.state.bomb.length === Object.keys(this.state.maps).length){
             document.getElementById('findMine').classList.add('win');
             this.setState({
                 end:'win'

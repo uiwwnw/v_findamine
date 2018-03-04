@@ -371,13 +371,13 @@ class I extends Box {
         if (this.state.hold) {
             popover =
                 <div className="popover">
-                    <span onMouseUp={this.props.markFlag.bind(this)}><i className="icon-flag"></i></span>
-                    <span onMouseUp={this.props.markBomb.bind(this)} ><i className="icon-bomb"></i></span>
-                    <span onMouseUp={this.props.markRemove.bind(this)}><i className="icon-trash"></i></span>
+                    <span onMouseUp={this.props.markFlag.bind(this)} onTouchStart={this.props.markFlag.bind(this)}><i className="icon-flag"></i></span>
+                    <span onMouseUp={this.props.markBomb.bind(this)} onTouchStart={this.props.markBomb.bind(this)}><i className="icon-bomb"></i></span>
+                    <span onMouseUp={this.props.markRemove.bind(this)} onTouchStart={this.props.markRemove.bind(this)}><i className="icon-trash"></i></span>
                 </div>
         }
         return (
-            <div className="box" onMouseUp={this.up.bind(this)} onMouseDown={this.down.bind(this)} onMouseOut={this.out.bind(this)} >
+            <div className="box" onMouseUp={this.up.bind(this)} onMouseDown={this.down.bind(this)} onTouchEnd={this.up.bind(this)} onTouchStart={this.down.bind(this)} onMouseOut={this.out.bind(this)} >
                 <span className="map" id={this.props.id} onClick={this.props.onClick.bind(this)}></span>
                 {popover}
             </div>

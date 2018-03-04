@@ -10543,24 +10543,24 @@ var I = function (_Box) {
                     { className: 'popover' },
                     _react2.default.createElement(
                         'span',
-                        { onMouseUp: this.props.markFlag.bind(this) },
+                        { onMouseUp: this.props.markFlag.bind(this), onTouchStart: this.props.markFlag.bind(this) },
                         _react2.default.createElement('i', { className: 'icon-flag' })
                     ),
                     _react2.default.createElement(
                         'span',
-                        { onMouseUp: this.props.markBomb.bind(this) },
+                        { onMouseUp: this.props.markBomb.bind(this), onTouchStart: this.props.markBomb.bind(this) },
                         _react2.default.createElement('i', { className: 'icon-bomb' })
                     ),
                     _react2.default.createElement(
                         'span',
-                        { onMouseUp: this.props.markRemove.bind(this) },
+                        { onMouseUp: this.props.markRemove.bind(this), onTouchStart: this.props.markRemove.bind(this) },
                         _react2.default.createElement('i', { className: 'icon-trash' })
                     )
                 );
             }
             return _react2.default.createElement(
                 'div',
-                { className: 'box', onMouseUp: this.up.bind(this), onMouseDown: this.down.bind(this), onMouseOut: this.out.bind(this) },
+                { className: 'box', onMouseUp: this.up.bind(this), onMouseDown: this.down.bind(this), onTouchEnd: this.up.bind(this), onTouchStart: this.down.bind(this), onMouseOut: this.out.bind(this) },
                 _react2.default.createElement('span', { className: 'map', id: this.props.id, onClick: this.props.onClick.bind(this) }),
                 popover
             );

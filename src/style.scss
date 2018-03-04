@@ -1,18 +1,117 @@
 @charset "UTF-8";
 @import "./spritesmith-generated/sprite";
 @include sprites($spritesheet-sprites);
+html,body,#root,[data-reactroot] {
+    width: 100%;
+    height: 100%;
+    font-size: 0;
+}
 body {
     margin: 0;
     padding: 0;
     background: #000;
 }
 
-.inputBox {
-    padding-top: .5%;
+[data-reactroot] {
+    text-align: center;
+
+    > * {
+        display: inline-block;
+        font-size: 15px;
+        vertical-align: middle;
+    }
+    
+    &:before {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+        content: '';
+    }
+}
+
+#root {
+    &.restart {
+        &:before {
+            display: none;
+        }
+
+        .startPack {
+            display: none;
+        }
+    }
+    &.win ,
+    &.lose {
+        @keyframes lose {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        &:before {
+            z-index: 2;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, .7);
+            animation: lose .8s;
+            content: "";
+        }
+    }
+}
+
+.startPack {
+    width: 40%;
+    background: #fff;
+
+    button {
+        display: block;
+        width: 100%;
+        font-size: 20px;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        height: 30px;
+        margin-bottom: 10px;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 15px;
+    }
+    
+    sub {
+        display: block;
+        margin-top: -5px;
+    }
+}
+
+.maps {
+    @for $i from 5 through 30 {
+        &[data-x="#{$i}"] {
+            width: 100vmin;
+            margin: auto;
+            padding-top: .5vmin * 11/$i;
+
+            &:before {
+                width: .5vmin * 11/$i;;
+                margin-top: -.5vmin * 11/$i;;
+            }
+            .box {
+                width: 8vmin * 11/$i;;
+                margin: .5vmin * 11/$i;;
+                padding-top: 8vmin * 11/$i;;
+                font-size: 20px * 11/$i;;
+                font-size: 6vmin * 11/$i;;
+    
+            }
+        }
+    }
     &:before {
         float: left;
-        width: .5%;
-        margin-top: -.5%;
         padding-top: 100%;
         content: '';
     }
@@ -23,14 +122,17 @@ body {
     } // .inputItem {
     // float: left;
     // }
-    .inputWrap {
+    .box {
         position: relative;
         float: left;
-        width: 8%;
-        margin: .5%;
-        padding-top: 8%;
         background: #fff;
-        input {
+        &:hover {
+            background: #eee;
+            .lose & {
+                background: #fff;
+            }
+        }
+        .map {
             position: absolute;
             top: 0;
             left: 0;
@@ -38,40 +140,96 @@ body {
             height: 100%;
             padding: 0;
             border: 0;
+            font-style: normal;
+            cursor: pointer;
             border-radius: 0;
             text-align: center;
-            font-size: 20px;
-            font-size: 6vw;
             box-sizing: border-box;
-            @for $i from 0 through 10 {
-                $vertical: 8%;
-                $horizon: 9%;
-                &[id^="#{$i}x"]+.popup {
-                    $j: 10 - $i;
-                    right: $horizon * $j - 30
+            transition: .4s;
+            transform: rotateY(180deg);
+
+            .lose & {
+                pointer-events: none;
+            }
+
+            &.active {
+                color: #fff;
+                cursor: default;
+                background: #000;
+                transform: rotateY(0);
+
+                .lose & {
+                    color: red;
                 }
-                &[id^="#{-$i}x"]+.popup {
-                    $j: 10 - $i;
-                    right: auto;
-                    left: $horizon * $j - 30;
+            }
+
+            i {
+                pointer-events: none;
+            }
+        }
+        .popover {
+            z-index: 2;
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            bottom: -50%;
+            left: -30%;
+            &:before {
+                z-index: 1;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: #000;
+                opacity: .3;
+                content: "";
+            }
+            span {
+                z-index: 10;
+                position: relative;
+                display: block;
+                height: calc(100% / 3);
+                font-size: 80%;
+                background: #fff;
+
+                i {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
                 }
-                &[id*="x#{$i}y"]+.popup {
-                    $j: 10 - $i;
-                    top: $vertical * $j - 30;
-                }
-                &[id*="x#{-$i}y"]+.popup {
-                    top: auto;
-                    bottom: (-$vertical * $i) + 62;
+
+                &:hover {
+                    background: #eee;
                 }
             }
         }
     }
     .popup {
+        @keyframes popup {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0)
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1)
+            }
+        }
         z-index: 2;
-        position: fixed; // width: 400px;
+        overflow: auto;
+        position: absolute; // width: 400px;
         // margin-left: -50%;
-        padding: 5%;
-        color: #fff;
-        background: rgba(0, 0, 0, .7);
+        top: 50%;
+        left: 50%;
+        display: inline-block;
+        // width: 30%;
+        // height: 30%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #000;
+        background: #fff;
+        animation: popup 1s;
     }
 }

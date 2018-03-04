@@ -16,18 +16,18 @@ class App extends React.Component {
         const _this = this;
         this.setState({start:false})
         
-        document.getElementById('root').classList.remove('lose');
-        document.getElementById('root').classList.remove('win');
+        document.getElementById('findMine').classList.remove('lose');
+        document.getElementById('findMine').classList.remove('win');
     }
     restart() {
         const _this = this;
         this.setState({start:false})
-        document.getElementById('root').classList.add('restart');
-        document.getElementById('root').classList.remove('lose');
-        document.getElementById('root').classList.remove('win');
+        document.getElementById('findMine').classList.add('restart');
+        document.getElementById('findMine').classList.remove('lose');
+        document.getElementById('findMine').classList.remove('win');
         setTimeout(function() {
             _this.start();
-            document.getElementById('root').classList.remove('restart');
+            document.getElementById('findMine').classList.remove('restart');
         }, 0)
     }
     start() {
@@ -107,7 +107,7 @@ class App extends React.Component {
             </div>;
         }
         return (
-            <div>
+            <div id="findMine">
                 {box}
                 {pack}
             </div>
@@ -130,7 +130,7 @@ class Box extends App {
         // console.log(this.state.complete)
         // console.log(this.state.bomb)
         if(this.state.complete.length === 0){
-            document.getElementById('root').classList.add('win');
+            document.getElementById('findMine').classList.add('win');
             this.setState({
                 end:'win'
             });
@@ -250,9 +250,9 @@ class Box extends App {
             this.setState({
                 end:'lose'
             });
-            document.getElementById('root').classList.add('lose');
+            document.getElementById('findMine').classList.add('lose');
             el.innerHTML = '<i class="icon-bomb"></i>';
-            el.classList.add('active');
+            el.classList.add('bomb');
             return false;
         } else {
             if (_this.state.maps[(pX) + 'x' + (pY) + 'y'] === undefined) {
@@ -370,7 +370,7 @@ class I extends Box {
         })
     }
     down() {
-        const end = (document.getElementById('root').classList.contains('lose')===true||document.getElementById('root').classList.contains('win')===true)?true:false;
+        const end = (document.getElementById('findMine').classList.contains('lose')===true||document.getElementById('findMine').classList.contains('win')===true)?true:false;
         const _this = this;
         if(!end){
             this.state.sto = setTimeout(() => {

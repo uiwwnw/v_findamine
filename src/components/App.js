@@ -81,7 +81,7 @@ class App extends React.Component {
         let box = '';
         let pack = '';
         if(this.state.start) {
-            box = <Box x={this.state.x} y={this.state.x} level={this.state.level} newstart={this.newstart.bind(this)} restart={this.restart.bind(this)} startDate={this.state.startDate}/>;
+            box = <Box x={this.state.x} y={this.state.y} level={this.state.level} newstart={this.newstart.bind(this)} restart={this.restart.bind(this)} startDate={this.state.startDate}/>;
         } else {
             pack = 
             <div className="startPack">
@@ -299,7 +299,7 @@ class Box extends App {
             <div className="popup">
                 <p>짝짝짝 미션컴플릿!</p>
                 <p>맵크기{this.props.x*this.props.y} 레벨 {this.props.level} 완료하는데 총 {Math.ceil((new Date() - this.props.startDate)/1000)}초걸렸어요.</p>
-                <p>{this.props.x*this.props.y/this.props.level*4 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
+                <p>{this.props.x*this.props.y/this.props.level*3 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
                 <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
                 <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
             </div>;

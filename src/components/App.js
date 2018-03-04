@@ -7,9 +7,9 @@ class App extends React.Component {
         this.state = {
             start: false,
             startDate:0,
-            level: 5,
-            x:11,
-            y:11
+            level: 9,
+            x:13,
+            y:13
         }
     }
     newstart() {
@@ -22,12 +22,13 @@ class App extends React.Component {
     restart() {
         const _this = this;
         this.setState({start:false})
-        
+        document.getElementById('root').classList.add('restart');
         document.getElementById('root').classList.remove('lose');
         document.getElementById('root').classList.remove('win');
         setTimeout(function() {
-            _this.start()
-        }, 1)
+            _this.start();
+            document.getElementById('root').classList.remove('restart');
+        }, 0)
     }
     start() {
         const date = new Date();
@@ -102,6 +103,7 @@ class App extends React.Component {
                 가로<input type="number" value={this.state.x} onChange={this.changeHo.bind(this)} />
                 새로<input type="number" value={this.state.y} onChange={this.changeVe.bind(this)} />
                 레벨<input type="number" value={this.state.level} onChange={this.changeLv.bind(this)} />
+                <sub>조작법: 클릭시 열림, 홀드시 매뉴</sub>
             </div>;
         }
         return (
@@ -125,7 +127,8 @@ class Box extends App {
     }
     check() {
         // console.log(this.props.startDate);
-        console.log(this.state.complete.length)
+        // console.log(this.state.complete)
+        // console.log(this.state.bomb)
         if(this.state.complete.length === 0){
             document.getElementById('root').classList.add('win');
             this.setState({
@@ -141,9 +144,10 @@ class Box extends App {
             return false;
         }
         const el = document.getElementById(id);
-        if(this.state.bomb.indexOf(id)!==-1) {
+        if(this.state.bomb.indexOf(id)!==-1 &&this.state.complete.indexOf(id)===-1) {
             this.state.complete.push(id);
         }
+        this.check();
         (el.classList.contains('markFlag'))&&(el.classList.remove('markFlag'));
         (el.classList.contains('markBomb'))&&(el.classList.remove('markBomb'));
         el.innerHTML = '';
@@ -158,9 +162,10 @@ class Box extends App {
         const el = document.getElementById(id);
         el.classList.add('markFlag');
         el.innerHTML = '<i class="icon-flag"></i>';
-        if(this.state.bomb.indexOf(id)!==-1) {
+        if(this.state.bomb.indexOf(id)!==-1 &&this.state.complete.indexOf(id)===-1) {
             this.state.complete.push(id);
         }
+        this.check();
         // console.log(this.state.complete,this.state.complete.length);
     }
     markBomb(e) {
@@ -268,7 +273,7 @@ class Box extends App {
                 this.state.bomb.push(Object.keys(this.state.maps)[p]);
             }
         }
-        this.state.complete = this.state.bomb;
+        this.state.complete = this.state.bomb.slice();
 
         for (let i = 0; i < this.state.bomb.length; i++) {
             const id = this.state.bomb[i];
@@ -308,7 +313,7 @@ class Box extends App {
             <div className="popup">
                 <p>짝짝짝 미션컴플릿!</p>
                 <p>맵크기{this.props.x*this.props.y} 레벨 {this.props.level} 완료하는데 총 {Math.ceil((new Date() - this.props.startDate)/1000)}초걸렸어요.</p>
-                <p>{this.props.x*this.props.y/this.props.level*5 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
+                <p>{this.props.x*this.props.y/this.props.level*4 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
                 <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
                 <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
             </div>;

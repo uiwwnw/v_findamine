@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const path = require('path');
-const SpritesmithPlugin = require('webpack-spritesmith');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const extractSass = new ExtractTextPlugin({
@@ -59,29 +58,6 @@ const config = {
             }
         ]
     },
-    resolve: {
-        //webpack 1:
-        // modulesDirectories: ['node_modules', 'spritesmith-generated'],
-        //webpack 2:
-        modules: ['node_modules', 'spritesmith-generated']
-        // modules: ['node_modules']
-    },
-    plugins: [
-        new SpritesmithPlugin({
-            src: {
-                cwd: path.resolve(__dirname, 'src/ico'),
-                glob: '*.png'
-            },
-            target: {
-                image: path.resolve(__dirname, 'src/spritesmith-generated/sprite.png'),
-                css: path.resolve(__dirname, 'src/spritesmith-generated/sprite.scss')
-            },
-            apiOptions: {
-                cssImageRef: './spritesmith-generated/sprite.png'
-            }
-        })
-        , extractSass
-    ]
 
 };
 

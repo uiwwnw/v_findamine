@@ -27,6 +27,7 @@
     "react": "^15.6.1",
     "react-dom": "^15.5.4",
     "react-iscroll": "^2.0.3",
+    "react-sortable": "^2.0.0",
     "react-tabs": "^1.1.0",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.17.0",

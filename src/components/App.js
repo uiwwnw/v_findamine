@@ -3,383 +3,409 @@ import React from 'react';
 class App extends React.Component {
     constructor() {
         super(...arguments);
-        this.state = {
-            start: false,
-            startDate:0,
-            level: 9,
-            x:13,
-            y:13
+        this.state={
+            data: [
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                },
+                {
+                    complete: false,
+                    important: 'a',
+                    time: "2018.01.02",
+                    text: "가나다라마바사아"
+                },
+                {
+                    complete: false,
+                    important: 'b',
+                    time: "2018.01.12",
+                    text: "ㅇㅇㅇㅇㅇ"
+                },
+                {
+                    complete: true,
+                    important: 'c',
+                    time: "2018.03.10",
+                    text: "쿠팡테스트완료"
+                }
+            ],
+            inputText:'',
+            important:'',
+            time: ''
         }
     }
-    newstart() {
-        // 새로게임 시작하기
-        const _this = this;
-        this.setState({start:false})
-        
-        document.getElementById('findMine').classList.remove('lose');
-        document.getElementById('findMine').classList.remove('win');
+    fnCreateInput (data) {
+        this.setState({inputText:data})
     }
-    restart() {
-        //재시작하기
-        const _this = this;
-        this.setState({start:false})
-        document.getElementById('findMine').classList.add('restart');
-        document.getElementById('findMine').classList.remove('lose');
-        document.getElementById('findMine').classList.remove('win');
-        setTimeout(function() {
-            _this.start();
-            document.getElementById('findMine').classList.remove('restart');
-        }, 0)
+    fnCreateImportant(data) {
+        this.setState({important:data})
     }
-    nextstart() {
-        //다음레벨시작하기
-        const _this = this;
-        this.setState({
-            start:false,
-            level: this.state.level-1<3?9:this.state.level-1,
-            x:this.state.level-1<3?this.state.x+1:this.state.x,
-            y:this.state.level-1<3?this.state.y+1:this.state.y
-        })
-        document.getElementById('findMine').classList.add('restart');
-        document.getElementById('findMine').classList.remove('lose');
-        document.getElementById('findMine').classList.remove('win');
-        setTimeout(function() {
-            _this.start();
-            document.getElementById('findMine').classList.remove('restart');
-        }, 0)
-    }
-    start() {
-        //시작하기
+    fnCreateDo() {
+        if(this.state.important===''){
+            alert('중요도를 선택해 주세요');
+            return false;
+        }
+        if(this.state.text===''){
+            alert('내용을 입력해 주세요');
+            return false;
+        }
         const date = new Date();
+        const time = date.getFullYear()+'.'+date.getMonth()+'.'+date.getDate();
+        const obj = {
+            complete: false,
+            important: this.state.important,
+            time: time,
+            text: this.state.inputText
+        }
+        const data = this.state.data;
+        data.push(obj);
         this.setState({
-            start:true,
-            startDate: date
-        })
-        
+            data: data,
+            inputText:'',
+            important:''
+        });
     }
-    changeLv(e) {
-        // 레벨변경
-        let num = prompt('3~9 중 입력해주세요~ 높을수록 어렵습니다.');
-        if(num > 9) {
-            num = 9;
-        } else if(num < 3) {
-            num = 3;
-        }
+    fnChangeComplete(e) {
+        const data = this.state.data;
+        data[e].complete = !data[e].complete;
         this.setState({
-            level: num
-        })
+            data: data
+        });
     }
-    changeHo(e) {
-        // 크기변경
-        let num = prompt('7~31 중 홀수를 입력해주세요~');
-        if(num%2===0) {
-            num = num-1;
-        }
-        if(num > 31) {
-            num = 31;
-        } else if(num < 7) {
-            num = 7;
-        }
+    fnChangeImportant(e) {
+        const data = this.state.data;
+        data[e[0]].important = e[1];
         this.setState({
-            x: num
-        })
+            data: data
+        });
     }
-    changeVe(e) {
-        // 크기변경
-        let num = prompt('7~31 중 홀수를 입력해주세요~');
-        if(num%2===0) {
-            num = num-1;
-        }
-        if(num > 31) {
-            num = 31;
-        } else if(num < 7) {
-            num = 7;
-        }
+    fnChangeText(e){
+        const data = this.state.data;
+        data[e[0]].text = e[1];
         this.setState({
-            y: num
-        })
+            data: data
+        });
     }
+    fnFilterImportant() {
+        // data를 필터하여 보내기
+    }
+    onFilterComplete() {
+        // data를 필터하여 보내기
+    }
+    
     render() {
-        let box = '';
-        let pack = '';
-        if(this.state.start) {
-            box = <Box x={this.state.x} y={this.state.y} level={this.state.level} newstart={this.newstart.bind(this)} restart={this.restart.bind(this)} nextstart={this.nextstart.bind(this)} startDate={this.state.startDate}/>;
-        } else {
-            pack = 
-            <div className="startPack">
-                <button onClick={this.start.bind(this)} >시작하기</button>
-                가로<input type="number" maxLength="2" value={this.state.x} readOnly="readonly" onClick={this.changeHo.bind(this)} />
-                새로<input type="number" maxLength="2" value={this.state.y} readOnly="readonly" onClick={this.changeVe.bind(this)} />
-                레벨<input type="number" maxLength="1" value={this.state.level} readOnly="readonly" onClick={this.changeLv.bind(this)} />
-                <sub>조작법: 클릭시 열림, 홀드시 매뉴</sub>
-            </div>;
-        }
+        let data = this.state.data;
+        // 필터하여 다시 보내주기 위한 변수
         return (
-            <div id="findMine">
-                {box}
-                {pack}
-            </div>
+            <section className="todoZone">
+                <Input inputText={this.state.inputText} onCreateInput={this.fnCreateInput.bind(this)} onCreateImportant={this.fnCreateImportant.bind(this)} onCreateDo={this.fnCreateDo.bind(this)}/>
+                <Filter onFilterImportant={this.fnFilterImportant} onFilterComplete={this.fnFilterComplete}/>
+                <Content data={data} onChangeComplete={this.fnChangeComplete.bind(this)} onChangeImportant={this.fnChangeImportant.bind(this)} onChangeText={this.fnChangeText.bind(this)}/>
+            </section>
         )
     }
 }
 
-class Box extends App {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            maps: {},
-            bomb:[],
-            complete:[],
-            end: false
-        }
+class Input extends React.Component {
+    onCreateInput(event) {
+        this.props.onCreateInput(event.target.value)
     }
-    check() {
-        // 성공체크
-        if(this.state.complete.length === 0 && this.state.bomb.length === Object.keys(this.state.maps).length){
-            document.getElementById('findMine').classList.add('win');
-            this.setState({
-                end:'win'
-            });
-        };
+    onCreateImportant(event) {
+        this.props.onCreateImportant(event.target.value)
     }
-    markRemove(e) {
-        // 깃발,폭탄체크 제거
-        this.check();
-        const target = e.target.parentNode.parentNode.parentNode.childNodes[0];
-        const id = target.id;
-        if(target.classList[1] === 'active') {
-            return false;
-        }
-        const el = document.getElementById(id);
-        if(this.state.bomb.indexOf(id)!==-1 &&this.state.complete.indexOf(id)===-1) {
-            this.state.complete.push(id);
-        }
-        this.check();
-        (el.classList.contains('markFlag'))&&(el.classList.remove('markFlag'));
-        (el.classList.contains('markBomb'))&&(el.classList.remove('markBomb'));
-        el.innerHTML = '';
-    }
-    markFlag(e) {
-        // 깃발체크
-        const target = e.target.parentNode.parentNode.parentNode.childNodes[0];
-        const id = target.id;
-        if(target.classList[1] === 'active') {
-            return false;
-        }
-        const el = document.getElementById(id);
-        el.classList.add('markFlag');
-        el.innerHTML = '<i class="icon-flag"></i>';
-        if(this.state.bomb.indexOf(id)!==-1 &&this.state.complete.indexOf(id)===-1) {
-            this.state.complete.push(id);
-        }
-        this.check();
-    }
-    markBomb(e) {
-        // 폭탄체크
-        const target = e.target.parentNode.parentNode.parentNode.childNodes[0];
-        const id = target.id;
-        if(target.classList[1] === 'active') {
-            return false;
-        }
-        const el = document.getElementById(id);
-        const num = this.state.complete.indexOf(id);
-        el.classList.add('markBomb');
-        el.innerHTML = '<i class="icon-bomb"></i>';
-        if(num !== -1) {
-            this.state.complete.splice(num, 1);
-        }
-        this.check();
-    }
-    click(e) {
-        // 클릭
-        if(e.target.classList[1] === 'active' || e.target.classList[1] === 'markBomb' || e.target.classList[1] === 'markFlag') {
-            return false;
-        }
-        let list = [];
-        const _this = this;
-        const id = e.target.id;
-        const idx = this.state.maps[e.target.id] === undefined ? '' : this.state.maps[e.target.id];
-        const el = document.getElementById(id);
-        const bomb = idx === 'B' ? false : true;
-        const xIdx = id.indexOf('x');
-        const yIdx = id.indexOf('y');
-        let pX = Number(id.substring(0, xIdx));
-        let pY = Number(id.substring(xIdx + 1, yIdx));
-        function rp(_pos) {
-            if (_pos !== undefined) {
-                list.shift();
-            }
-            pX = _pos === undefined ? pX : _pos.x;
-            pY = _pos === undefined ? pY : _pos.y;
-            for (let j = -1; j < 2; j++) {
-                for (let k = -1; k < 2; k++) {
-                    if (j === 0 && k === 0) {
-                    } else {
-                        if (Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y') !== -1 && !document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.contains('markBomb')&&!document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.contains('markFlag')) {
-                            if (_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] !== 'B') {
-                                document.getElementById((pX + j) + 'x' + (pY + k) + 'y').classList.add('active');
-                                document.getElementById((pX + j) + 'x' + (pY + k) + 'y').innerText = _this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] === undefined ? '' : _this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'];
-
-                                if (_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] === undefined) {
-                                    let pos = {};
-                                    pos.x = pX + j;
-                                    pos.y = pY + k;
-                                    list.push(pos);
-                                }
-                                delete _this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'];
-                            }
-                        }
-                    }
-                }
-            }
-            if (list.length <= 0) { return false; } else {
-                for (let i = 0; i < list.length; i++) {
-                    new rp(list[i]);
-                }
-            }
-        }
-        if (!bomb) {
-            // 폭탄 클릭 시
-            this.setState({
-                end:'lose'
-            });
-            document.getElementById('findMine').classList.add('lose');
-            el.innerHTML = '<i class="icon-bomb"></i>';
-            el.classList.add('bomb');
-            return false;
-        } else {
-            if (_this.state.maps[(pX) + 'x' + (pY) + 'y'] === undefined) {
-                rp();
-            }
-            delete this.state.maps[(pX) + 'x' + (pY) + 'y'];
-            el.classList.add('active');
-            el.innerText = idx;
-        }
-        this.check();
-    }
-    makeIdx() {
-        // 임의 수 지정하기, 폭탄만들기, 폭탄주변 숫자 더하기
-        for (let i = 0; i < Object.keys(this.state.maps).length; i++) {
-            const p = Object.values(this.state.maps).indexOf('B', i);
-            if(this.state.bomb.indexOf(Object.keys(this.state.maps)[p]) === -1 && Object.keys(this.state.maps)[p] !== undefined) {
-                this.state.bomb.push(Object.keys(this.state.maps)[p]);
-            }
-        }
-        this.state.complete = this.state.bomb.slice();
-
-        for (let i = 0; i < this.state.bomb.length; i++) {
-            const id = this.state.bomb[i];
-            const xIdx = id.indexOf('x');
-            const yIdx = id.indexOf('y');
-            const pX = Number(id.substring(0, xIdx));
-            const pY = Number(id.substring(xIdx + 1, yIdx));
-            for (let j = -1; j < 2; j++) {
-                for (let k = -1; k < 2; k++) {
-                    if (Object.keys(this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y') !== -1 && this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] !== 'B') {
-                        let num = (this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] === undefined) ? 0 : this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'];
-                        this.state.maps[(pX + j) + 'x' + (pY + k) + 'y'] = num + 1;
-                    }
-                }
-            }
-        }
-    }
-    marking(e) {
-        e.target.parentNode.setAttribute('style','opacity:.3');
-    }
-    random(n) {
-        // 렌덤수
-        let rd = Math.floor((Math.random() * n)) === 0 ? 'B' : undefined;
-        return rd;
+    onCreateDo(event) {
+        this.props.onCreateDo(event.target.value)
     }
     render() {
-        let popup = '';
-        let maps = [];
-        if(this.state.end === 'win') {
-            popup = 
-            <div className="popup">
-                <p>짝짝짝 미션컴플릿!</p>
-                <p>맵크기{this.props.x*this.props.y} 레벨 {this.props.level} 완료하는데 총 {Math.ceil((new Date() - this.props.startDate)/1000)}초걸렸어요.</p>
-                <p>{this.props.x*this.props.y/this.props.level*3 >Math.ceil((new Date() - this.props.startDate)/1000)?'정말 잘하시네요~~':'조금더분발해주세요~~'}</p>
-                <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
-                <button onClick={this.props.nextstart.bind(this)}>다음레벨시작하기</button>
-                <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
-            </div>;
-        }else if (this.state.end === 'lose') {
-            popup = 
-            <div className="popup">
-                <p>게임오버</p>
-                {/* <button onClick={this.marking.bind(this)}>정답확인</button> */}
-                <button onClick={this.props.restart.bind(this)}>다시시작하기</button>
-                <button onClick={this.props.newstart.bind(this)}>새로시작하기</button>
-            </div>;
-        }
-        const x = Number(this.props.x) + 1;
-        const y = Number(this.props.y) + 1;
-        for (let i = (y / 2 - 1); i > -(y / 2); i--) {
-            for (let j = -(x / 2 - 1); j < (x / 2); j++) {
-                maps.push(j + 'x' + i + 'y');
-                this.state.maps[j + 'x' + i + 'y'] = this.random(this.props.level);
-            }
-        }
-        this.makeIdx();
         return (
-            <div className="maps" data-x={this.props.x} data-y={this.props.y}>
-                {maps.map((item, i) => {
+            <article className="inpBox">
+                <select className="importantSlt" name="important" id="important" onChange={this.onCreateImportant.bind(this)}>
+                    <option>중요도</option>
+                    <option value="a">매우 중요</option>
+                    <option value="b">중요</option>
+                    <option value="c">보통</option>
+                </select>
+                <label htmlFor="textInput">할 일을 입력하세요</label>
+                <input type="text" placeholder="할 일을 입력하세요" name="textInput" id="textInput" value={this.props.inputText} onChange={this.onCreateInput.bind(this)}/>
+                <button onClick={this.onCreateDo.bind(this)}>추가</button>
+            </article>
+        )
+    }
+}
+
+class Filter extends React.Component {
+    constructor() {
+        super(...arguments);
+        this.state={
+            a:'',
+            b:'',
+            c:'',
+            complete:'',
+            incomplete:''
+        }
+    }
+    onChangeComplete(event) {
+        // 완료, 미완료 필터이벤트
+    }
+    onChangeImportant(event) {
+        // 중요 보통 필터이벤트
+    }
+    render() {
+        return (
+            <article className="filterBox">
+                <div>
+                    <label>
+                        <input onChange={this.onChangeComplete.bind(this)} type="checkbox" name="important" value="" />
+                        <span>모두</span>
+                    </label>
+                    <label>
+                        <input onChange={this.onChangeComplete.bind(this)} type="checkbox" name="important" value="a" />
+                        <span>매우 중요</span>
+                    </label>
+                    <label>
+                        <input onChange={this.onChangeComplete.bind(this)} type="checkbox" name="important" value="b" />
+                        <span>중요</span>
+                    </label>
+                    <label>
+                        <input onChange={this.onChangeComplete.bind(this)} type="checkbox" name="important" value="c" />
+                        <span>보통</span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        <input onChange={this.onChangeImportant.bind(this)} type="checkbox" name="important" value="" />
+                        <span>모두</span>
+                    </label>
+                    <label>
+                        <input onChange={this.onChangeImportant.bind(this)} type="checkbox" name="important" value="complete" />
+                        <span>완료</span>
+                    </label>
+                    <label>
+                        <input onChange={this.onChangeImportant.bind(this)} type="checkbox" name="important" value="incomplete" />
+                        <span>미완료</span>
+                    </label>
+                </div>
+            </article>
+        )
+    }
+}
+
+class Content extends React.Component {
+    render() {
+        return (
+            <article className="contentBox">
+                {this.props.data.map((item, i) => {
                     return (
-                        <I key={item} markBomb={this.markBomb.bind(this)} markFlag={this.markFlag.bind(this)} markRemove={this.markRemove.bind(this)} onClick={this.click.bind(this)} id={item} />
+                        <Label complete={item.complete} important={item.important} time={item.time} text={item.text} key={i} datakey={i} onChangeComplete={this.props.onChangeComplete.bind(this)} onChangeImportant={this.props.onChangeImportant.bind(this)} onChangeText={this.props.onChangeText.bind(this)}/>
                     )
                 })}
-                {popup}
-            </div>
+            </article>
         )
     }
 }
 
-class I extends Box {
+class Label extends React.Component {
     constructor() {
         super(...arguments);
-        this.state = {
-            hold: false,
-            sto: false
+        this.state={
+            editAble:false
         }
     }
-    out() {
-        // 마우스 아웃
-        clearTimeout(this.state.sto);
+    onChangeText(event) {
+        const e = [
+            this.props.datakey, event.target.value
+        ]
+        this.props.onChangeText(e);
     }
-    up() {
-        // 마우스업
-        clearTimeout(this.state.sto);
+    onChangeComplete(event) {
+        this.props.onChangeComplete(this.props.datakey)
+    }
+    onChangeImportant(event) {
+        const e = [
+            this.props.datakey, event.target.value
+        ]
+        this.props.onChangeImportant(e);
+    }
+    fnEditAbleOn() {
         this.setState({
-            hold: false
+            editAble: true
         })
     }
-    down() {
-        // 마우스 다운
-        const end = (document.getElementById('findMine').classList.contains('lose')===true||document.getElementById('findMine').classList.contains('win')===true)?true:false;
-        const _this = this;
-        if(!end){
-            this.state.sto = setTimeout(() => {
-                _this.setState({
-                    hold: true
-                })
-            }, 300);
-        }
+    fnEditAbleOff() {
+        this.setState({
+            editAble: false
+        })
     }
     render() {
-        let popover = '';
-        if (this.state.hold) {
-            popover =
-                <div className="popover">
-                    <span onMouseUp={this.props.markFlag.bind(this)} onTouchEnd={this.props.markFlag.bind(this)}><i className="icon-flag"></i></span>
-                    <span onMouseUp={this.props.markBomb.bind(this)} onTouchEnd={this.props.markBomb.bind(this)}><i className="icon-bomb"></i></span>
-                    <span onMouseUp={this.props.markRemove.bind(this)} onTouchEnd={this.props.markRemove.bind(this)}><i className="icon-trash"></i></span>
-                </div>
+        let cls = 'itemWrapper';
+        let imp = '';
+        let impTxt = '보통';
+        let txt = '';
+        if(this.props.complete) {
+            cls += ' complete';
+        } else{
+            cls.replace(' complete','');
         }
-        return (
-            <div className="box" onMouseUp={this.up.bind(this)} onMouseDown={this.down.bind(this)} onTouchEnd={this.up.bind(this)} onTouchStart={this.down.bind(this)} onMouseOut={this.out.bind(this)} >
-                <span className="map" id={this.props.id} onClick={this.props.onClick.bind(this)}></span>
-                {popover}
+        if(this.state.editAble) {
+            cls += ' editAble';
+        } else{
+            cls.replace(' editAble','');
+        }
+        if(this.props.important === 'a') {
+            impTxt= '매우 중요';
+        } else if(this.props.important === 'b') {
+            impTxt= '중요';
+        } else {
+            impTxt= '보통';
+        }
+        if(this.state.editAble) {
+            imp = <select name="important" defaultValue={this.props.important} className="importantSlt" onChange={this.onChangeImportant.bind(this)} >
+                <option value="a">매우 중요</option>
+                <option value="b">중요</option>
+                <option value="c">보통</option>
+            </select>;
+            txt = <input type="text" onChange={this.onChangeText.bind(this)} value={this.props.text}/>;
+        } else {
+            imp = <span>{impTxt}</span>
+            txt = <p className="text" onClick={this.fnEditAbleOn.bind(this)}>{this.props.text}</p>;
+        }
+        
+        return(
+            <div className={cls}>
+                <label className="chkWrap">
+                    <input type="checkbox" defaultChecked={this.props.complete} onChange={this.onChangeComplete.bind(this)}/>
+                    <i></i>
+                </label>
+                <div className="infoWrap">
+                    <div>
+                        중요도: {imp}
+                    </div>
+                    <p className="time">{this.props.time}</p>
+                    {txt}
+                    <button type="button" onClick={this.fnEditAbleOff.bind(this)}>수정</button>
+                </div>
+                <i className="dragable"></i>
             </div>
         )
     }

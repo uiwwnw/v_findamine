@@ -10238,6 +10238,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// console.log(Data);
+
 var App = function (_React$Component) {
     _inherits(App, _React$Component);
 
@@ -10376,6 +10378,7 @@ var App = function (_React$Component) {
     }
 
     _createClass(App, [{
+<<<<<<< HEAD
         key: 'fnCreateInput',
         value: function fnCreateInput(data) {
             this.setState({ inputText: data });
@@ -10417,29 +10420,82 @@ var App = function (_React$Component) {
         value: function fnChangeComplete(e) {
             var data = this.state.data;
             data[e].complete = !data[e].complete;
+=======
+        key: 'newstart',
+        value: function newstart() {
+            var _this = this;
+            this.setState({ start: false });
+
+            document.getElementById('findMine').classList.remove('lose');
+            document.getElementById('findMine').classList.remove('win');
+        }
+    }, {
+        key: 'restart',
+        value: function restart() {
+            var _this = this;
+            this.setState({ start: false });
+            document.getElementById('findMine').classList.add('restart');
+            document.getElementById('findMine').classList.remove('lose');
+            document.getElementById('findMine').classList.remove('win');
+            setTimeout(function () {
+                _this.start();
+                document.getElementById('findMine').classList.remove('restart');
+            }, 0);
+        }
+    }, {
+        key: 'start',
+        value: function start() {
+            var date = new Date();
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             this.setState({
                 data: data
             });
         }
     }, {
+<<<<<<< HEAD
         key: 'fnChangeImportant',
         value: function fnChangeImportant(e) {
             var data = this.state.data;
             data[e[0]].important = e[1];
+=======
+        key: 'changeLv',
+        value: function changeLv(e) {
+            var num = prompt('3~9 중 입력해주세요~ 높을수록 어렵습니다.');
+            if (num > 9) {
+                num = 9;
+            } else if (num < 3) {
+                num = 3;
+            }
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             this.setState({
                 data: data
             });
         }
     }, {
+<<<<<<< HEAD
         key: 'fnChangeText',
         value: function fnChangeText(e) {
             var data = this.state.data;
             data[e[0]].text = e[1];
+=======
+        key: 'changeHo',
+        value: function changeHo(e) {
+            var num = prompt('7~31 중 홀수를 입력해주세요~');
+            if (num % 2 === 0) {
+                num = num - 1;
+            }
+            if (num > 31) {
+                num = 31;
+            } else if (num < 7) {
+                num = 7;
+            }
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             this.setState({
                 data: data
             });
         }
     }, {
+<<<<<<< HEAD
         key: 'fnFilterImportant',
         value: function fnFilterImportant() {
             // data를 필터하여 보내기
@@ -10448,12 +10504,57 @@ var App = function (_React$Component) {
         key: 'onFilterComplete',
         value: function onFilterComplete() {
             // data를 필터하여 보내기
+=======
+        key: 'changeVe',
+        value: function changeVe(e) {
+            var num = prompt('7~31 중 홀수를 입력해주세요~');
+            if (num % 2 === 0) {
+                num = num - 1;
+            }
+            if (num > 31) {
+                num = 31;
+            } else if (num < 7) {
+                num = 7;
+            }
+            this.setState({
+                y: num
+            });
+>>>>>>> parent of 33335ce... 마우스우클릭해제
         }
     }, {
         key: 'render',
         value: function render() {
+<<<<<<< HEAD
             var data = this.state.data;
             // 필터하여 다시 보내주기 위한 변수
+=======
+            var box = '';
+            var pack = '';
+            if (this.state.start) {
+                box = _react2.default.createElement(Box, { x: this.state.x, y: this.state.y, level: this.state.level, newstart: this.newstart.bind(this), restart: this.restart.bind(this), startDate: this.state.startDate });
+            } else {
+                pack = _react2.default.createElement(
+                    'div',
+                    { className: 'startPack' },
+                    _react2.default.createElement(
+                        'button',
+                        { onClick: this.start.bind(this) },
+                        '\uC2DC\uC791\uD558\uAE30'
+                    ),
+                    '\uAC00\uB85C',
+                    _react2.default.createElement('input', { type: 'number', maxLength: '2', value: this.state.x, readOnly: 'readonly', onClick: this.changeHo.bind(this) }),
+                    '\uC0C8\uB85C',
+                    _react2.default.createElement('input', { type: 'number', maxLength: '2', value: this.state.y, readOnly: 'readonly', onClick: this.changeVe.bind(this) }),
+                    '\uB808\uBCA8',
+                    _react2.default.createElement('input', { type: 'number', maxLength: '1', value: this.state.level, readOnly: 'readonly', onClick: this.changeLv.bind(this) }),
+                    _react2.default.createElement(
+                        'sub',
+                        null,
+                        '\uC870\uC791\uBC95: \uD074\uB9AD\uC2DC \uC5F4\uB9BC, \uD640\uB4DC\uC2DC \uB9E4\uB274'
+                    )
+                );
+            }
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             return _react2.default.createElement(
                 'section',
                 { className: 'todoZone' },
@@ -10476,10 +10577,198 @@ var Input = function (_React$Component2) {
         return _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).apply(this, arguments));
     }
 
+<<<<<<< HEAD
     _createClass(Input, [{
         key: 'onCreateInput',
         value: function onCreateInput(event) {
             this.props.onCreateInput(event.target.value);
+=======
+    _createClass(Box, [{
+        key: 'check',
+        value: function check() {
+            // console.log(this.props.startDate);
+            // console.log(this.state.bomb.length)
+            // console.log()
+            if (this.state.complete.length === 0 && this.state.bomb.length === Object.keys(this.state.maps).length) {
+                document.getElementById('findMine').classList.add('win');
+                this.setState({
+                    end: 'win'
+                });
+            };
+        }
+    }, {
+        key: 'markRemove',
+        value: function markRemove(e) {
+            this.check();
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            if (target.classList[1] === 'active') {
+                return false;
+            }
+            var el = document.getElementById(id);
+            if (this.state.bomb.indexOf(id) !== -1 && this.state.complete.indexOf(id) === -1) {
+                this.state.complete.push(id);
+            }
+            this.check();
+            el.classList.contains('markFlag') && el.classList.remove('markFlag');
+            el.classList.contains('markBomb') && el.classList.remove('markBomb');
+            el.innerHTML = '';
+            // delete this.state.maps[id]; 
+        }
+    }, {
+        key: 'markFlag',
+        value: function markFlag(e) {
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            if (target.classList[1] === 'active') {
+                return false;
+            }
+            var el = document.getElementById(id);
+            el.classList.add('markFlag');
+            el.innerHTML = '<i class="icon-flag"></i>';
+            if (this.state.bomb.indexOf(id) !== -1 && this.state.complete.indexOf(id) === -1) {
+                this.state.complete.push(id);
+            }
+            this.check();
+            // console.log(this.state.complete,this.state.complete.length);
+        }
+    }, {
+        key: 'markBomb',
+        value: function markBomb(e) {
+            var target = e.target.parentNode.parentNode.parentNode.childNodes[0];
+            var id = target.id;
+            // console.log(id);
+            if (target.classList[1] === 'active') {
+                return false;
+            }
+            var el = document.getElementById(id);
+            var num = this.state.complete.indexOf(id);
+            el.classList.add('markBomb');
+            // el.setAttribute('data-bomb-index', num);
+            el.innerHTML = '<i class="icon-bomb"></i>';
+            if (num !== -1) {
+                this.state.complete.splice(num, 1);
+            }
+            // console.log(this.state.complete,this.state.complete.length);
+            this.check();
+        }
+    }, {
+        key: 'click',
+        value: function click(e) {
+            // const slt = [];
+            // console.log(e.target);
+            if (e.target.classList[1] === 'active' || e.target.classList[1] === 'markBomb' || e.target.classList[1] === 'markFlag') {
+                return false;
+            }
+            var list = [];
+            var _this = this;
+            var id = e.target.id;
+            var idx = this.state.maps[e.target.id] === undefined ? '' : this.state.maps[e.target.id];
+            var el = document.getElementById(id);
+            // console.log(el)
+            var bomb = idx === 'B' ? false : true;
+            var xIdx = id.indexOf('x');
+            var yIdx = id.indexOf('y');
+            var pX = Number(id.substring(0, xIdx));
+            var pY = Number(id.substring(xIdx + 1, yIdx));
+            function rp(_pos) {
+                // console.log(_pX);
+                // let sto;
+                if (_pos !== undefined) {
+                    list.shift();
+                }
+                pX = _pos === undefined ? pX : _pos.x;
+                pY = _pos === undefined ? pY : _pos.y;
+                // console.log(_pX,_pY);
+                // console.log(pX,pY);
+                for (var j = -1; j < 2; j++) {
+                    for (var k = -1; k < 2; k++) {
+                        if (j === 0 && k === 0) {} else {
+                            if (Object.keys(_this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y') !== -1 && !document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.contains('markBomb') && !document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.contains('markFlag')) {
+                                // console.log((pX + j) + 'x' + (pY + k) + 'y');
+                                if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
+                                    document.getElementById(pX + j + 'x' + (pY + k) + 'y').classList.add('active');
+                                    document.getElementById(pX + j + 'x' + (pY + k) + 'y').innerText = _this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined ? '' : _this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+
+                                    if (_this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined) {
+                                        // console.log(_this.state.maps[(pX + j) + 'x' + (pY + k) + 'y']);
+                                        var pos = {};
+                                        pos.x = pX + j;
+                                        pos.y = pY + k;
+                                        list.push(pos);
+                                    }
+                                    delete _this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+                                    // console.log(Object.keys(_this.state.maps).indexOf((pX + j) + 'x' + (pY + k) + 'y'))
+                                    // console.log(Object.keys(_this.state.maps).length)
+                                }
+                            }
+                        }
+                        // console.log();
+                    }
+                }
+                if (list.length <= 0) {
+                    return false;
+                } else {
+                    for (var i = 0; i < list.length; i++) {
+                        // console.log(list);
+                        new rp(list[i]);
+                    }
+                }
+            }
+            if (!bomb) {
+                this.setState({
+                    end: 'lose'
+                });
+                document.getElementById('findMine').classList.add('lose');
+                el.innerHTML = '<i class="icon-bomb"></i>';
+                el.classList.add('bomb');
+                return false;
+            } else {
+                if (_this.state.maps[pX + 'x' + pY + 'y'] === undefined) {
+                    rp();
+                }
+                delete this.state.maps[pX + 'x' + pY + 'y'];
+                el.classList.add('active');
+                el.innerText = idx;
+            }
+            this.check();
+            // console.log(Object.keys(this.state.maps).length);
+        }
+    }, {
+        key: 'makeIdx',
+        value: function makeIdx() {
+            // let l = {};
+            for (var i = 0; i < Object.keys(this.state.maps).length; i++) {
+                var p = Object.values(this.state.maps).indexOf('B', i);
+                if (this.state.bomb.indexOf(Object.keys(this.state.maps)[p]) === -1 && Object.keys(this.state.maps)[p] !== undefined) {
+                    this.state.bomb.push(Object.keys(this.state.maps)[p]);
+                }
+            }
+            this.state.complete = this.state.bomb.slice();
+
+            for (var _i = 0; _i < this.state.bomb.length; _i++) {
+                var id = this.state.bomb[_i];
+                // console.log(el)
+                // console.log(id);
+                var xIdx = id.indexOf('x');
+                var yIdx = id.indexOf('y');
+                var pX = Number(id.substring(0, xIdx));
+                var pY = Number(id.substring(xIdx + 1, yIdx));
+                // console.log(id)
+                for (var j = -1; j < 2; j++) {
+                    for (var k = -1; k < 2; k++) {
+                        if (Object.keys(this.state.maps).indexOf(pX + j + 'x' + (pY + k) + 'y') !== -1 && this.state.maps[pX + j + 'x' + (pY + k) + 'y'] !== 'B') {
+                            var num = this.state.maps[pX + j + 'x' + (pY + k) + 'y'] === undefined ? 0 : this.state.maps[pX + j + 'x' + (pY + k) + 'y'];
+                            // console.log(this.state.maps[(pX+j)+'x'+(pY+k)+'y']===undefined,(pX+j)+'x'+(pY+k)+'y')
+                            this.state.maps[pX + j + 'x' + (pY + k) + 'y'] = num + 1;
+                        }
+                    }
+                }
+            }
+            // this.state.maps['-5x5y']='aaaa';
+            // console.log(Object.keys(l).length);
+            // console.log(this.state.maps);
+>>>>>>> parent of 33335ce... 마우스우클릭해제
         }
     }, {
         key: 'onCreateImportant',
@@ -10487,9 +10776,16 @@ var Input = function (_React$Component2) {
             this.props.onCreateImportant(event.target.value);
         }
     }, {
+<<<<<<< HEAD
         key: 'onCreateDo',
         value: function onCreateDo(event) {
             this.props.onCreateDo(event.target.value);
+=======
+        key: 'random',
+        value: function random(n) {
+            var rd = Math.floor(Math.random() * n) === 0 ? 'B' : undefined;
+            return rd;
+>>>>>>> parent of 33335ce... 마우스우클릭해제
         }
     }, {
         key: 'render',
@@ -10511,6 +10807,7 @@ var Input = function (_React$Component2) {
                         '\uB9E4\uC6B0 \uC911\uC694'
                     ),
                     _react2.default.createElement(
+<<<<<<< HEAD
                         'option',
                         { value: 'b' },
                         '\uC911\uC694'
@@ -10519,6 +10816,11 @@ var Input = function (_React$Component2) {
                         'option',
                         { value: 'c' },
                         '\uBCF4\uD1B5'
+=======
+                        'button',
+                        { onClick: this.props.newstart.bind(this) },
+                        '\uC0C8\uB85C\uC2DC\uC791\uD558\uAE30'
+>>>>>>> parent of 33335ce... 마우스우클릭해제
                     )
                 ),
                 _react2.default.createElement(
@@ -10616,6 +10918,7 @@ var Filter = function (_React$Component3) {
                             '\uBCF4\uD1B5'
                         )
                     )
+<<<<<<< HEAD
                 ),
                 _react2.default.createElement(
                     'div',
@@ -10672,6 +10975,23 @@ var Content = function (_React$Component4) {
         value: function render() {
             var _this5 = this;
 
+=======
+                );
+            }
+            var x = Number(this.props.x) + 1;
+            var y = Number(this.props.y) + 1;
+            // console.log(Object.values(this.state.maps).length);
+            for (var i = y / 2 - 1; i > -(y / 2); i--) {
+                for (var j = -(x / 2 - 1); j < x / 2; j++) {
+                    maps.push(j + 'x' + i + 'y');
+                    this.state.maps[j + 'x' + i + 'y'] = this.random(this.props.level);
+                }
+            }
+            // console.log(this.state.ids.length);
+            // console.log(Object.values(this.state.maps).length);
+            this.makeIdx();
+            // console.log(Object.values(this.state.maps).length);
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             return _react2.default.createElement(
                 'article',
                 { className: 'contentBox' },
@@ -10699,6 +11019,7 @@ var Label = function (_React$Component5) {
         return _this6;
     }
 
+<<<<<<< HEAD
     _createClass(Label, [{
         key: 'onChangeText',
         value: function onChangeText(event) {
@@ -10719,16 +11040,41 @@ var Label = function (_React$Component5) {
     }, {
         key: 'fnEditAbleOn',
         value: function fnEditAbleOn() {
+=======
+    _createClass(I, [{
+        key: 'out',
+        value: function out() {
+            clearTimeout(this.state.sto);
+        }
+    }, {
+        key: 'up',
+        value: function up() {
+            clearTimeout(this.state.sto);
+>>>>>>> parent of 33335ce... 마우스우클릭해제
             this.setState({
                 editAble: true
             });
         }
     }, {
+<<<<<<< HEAD
         key: 'fnEditAbleOff',
         value: function fnEditAbleOff() {
             this.setState({
                 editAble: false
             });
+=======
+        key: 'down',
+        value: function down() {
+            var end = document.getElementById('findMine').classList.contains('lose') === true || document.getElementById('findMine').classList.contains('win') === true ? true : false;
+            var _this = this;
+            if (!end) {
+                this.state.sto = setTimeout(function () {
+                    _this.setState({
+                        hold: true
+                    });
+                }, 300);
+            }
+>>>>>>> parent of 33335ce... 마우스우클릭해제
         }
     }, {
         key: 'render',
@@ -10759,6 +11105,7 @@ var Label = function (_React$Component5) {
                     'select',
                     { name: 'important', defaultValue: this.props.important, className: 'importantSlt', onChange: this.onChangeImportant.bind(this) },
                     _react2.default.createElement(
+<<<<<<< HEAD
                         'option',
                         { value: 'a' },
                         '\uB9E4\uC6B0 \uC911\uC694'
@@ -10772,6 +11119,21 @@ var Label = function (_React$Component5) {
                         'option',
                         { value: 'c' },
                         '\uBCF4\uD1B5'
+=======
+                        'span',
+                        { onMouseUp: this.props.markFlag.bind(this), onTouchStart: this.props.markFlag.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-flag' })
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { onMouseUp: this.props.markBomb.bind(this), onTouchStart: this.props.markBomb.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-bomb' })
+                    ),
+                    _react2.default.createElement(
+                        'span',
+                        { onMouseUp: this.props.markRemove.bind(this), onTouchStart: this.props.markRemove.bind(this) },
+                        _react2.default.createElement('i', { className: 'icon-trash' })
+>>>>>>> parent of 33335ce... 마우스우클릭해제
                     )
                 );
                 txt = _react2.default.createElement('input', { type: 'text', onChange: this.onChangeText.bind(this), value: this.props.text });
@@ -11904,6 +12266,7 @@ module.exports = function(useSourceMap) {
 		}).join("");
 	};
 
+<<<<<<< HEAD
 	// import a list of modules into the list
 	list.i = function(modules, mediaQuery) {
 		if(typeof modules === "string")
@@ -11932,6 +12295,10 @@ module.exports = function(useSourceMap) {
 	};
 	return list;
 };
+=======
+// module
+exports.push([module.i, ".daum {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(" + escape(__webpack_require__(16)) + ");\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nhtml, body, #root, [data-reactroot] {\n  width: 100%;\n  height: 100%;\n  font-size: 0; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n[data-reactroot] {\n  text-align: center; }\n  [data-reactroot] > * {\n    display: inline-block;\n    font-size: 15px;\n    vertical-align: middle; }\n  [data-reactroot]:before {\n    display: inline-block;\n    height: 100%;\n    vertical-align: middle;\n    content: ''; }\n\n#findMine.restart:after {\n  display: none; }\n\n#findMine.restart .startPack {\n  display: none; }\n\n@keyframes lose {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n#findMine.win:after, #findMine.lose:after {\n  z-index: 1;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.7);\n  animation: lose .8s;\n  content: \"\"; }\n\n#findMine .startPack {\n  width: 40%;\n  background: #fff; }\n  #findMine .startPack button {\n    display: block;\n    width: 100%;\n    font-size: 20px; }\n  #findMine .startPack input {\n    display: block;\n    width: 100%;\n    height: 30px;\n    margin-bottom: 10px;\n    text-align: center;\n    box-sizing: border-box;\n    font-size: 15px; }\n  #findMine .startPack sub {\n    display: block;\n    margin-top: -5px; }\n\n.maps[data-x=\"7\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.78571vmin; }\n  .maps[data-x=\"7\"]:before {\n    width: 0.78571vmin;\n    margin-top: -0.78571vmin; }\n  .maps[data-x=\"7\"] .box {\n    width: 12.57143vmin;\n    margin: 0.78571vmin;\n    padding-top: 12.57143vmin;\n    font-size: 31.42857px;\n    font-size: 9.42857vmin; }\n\n.maps[data-x=\"9\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.61111vmin; }\n  .maps[data-x=\"9\"]:before {\n    width: 0.61111vmin;\n    margin-top: -0.61111vmin; }\n  .maps[data-x=\"9\"] .box {\n    width: 9.77778vmin;\n    margin: 0.61111vmin;\n    padding-top: 9.77778vmin;\n    font-size: 24.44444px;\n    font-size: 7.33333vmin; }\n\n.maps[data-x=\"11\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.5vmin; }\n  .maps[data-x=\"11\"]:before {\n    width: 0.5vmin;\n    margin-top: -0.5vmin; }\n  .maps[data-x=\"11\"] .box {\n    width: 8vmin;\n    margin: 0.5vmin;\n    padding-top: 8vmin;\n    font-size: 20px;\n    font-size: 6vmin; }\n\n.maps[data-x=\"13\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.42308vmin; }\n  .maps[data-x=\"13\"]:before {\n    width: 0.42308vmin;\n    margin-top: -0.42308vmin; }\n  .maps[data-x=\"13\"] .box {\n    width: 6.76923vmin;\n    margin: 0.42308vmin;\n    padding-top: 6.76923vmin;\n    font-size: 16.92308px;\n    font-size: 5.07692vmin; }\n\n.maps[data-x=\"15\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.36667vmin; }\n  .maps[data-x=\"15\"]:before {\n    width: 0.36667vmin;\n    margin-top: -0.36667vmin; }\n  .maps[data-x=\"15\"] .box {\n    width: 5.86667vmin;\n    margin: 0.36667vmin;\n    padding-top: 5.86667vmin;\n    font-size: 14.66667px;\n    font-size: 4.4vmin; }\n\n.maps[data-x=\"17\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.32353vmin; }\n  .maps[data-x=\"17\"]:before {\n    width: 0.32353vmin;\n    margin-top: -0.32353vmin; }\n  .maps[data-x=\"17\"] .box {\n    width: 5.17647vmin;\n    margin: 0.32353vmin;\n    padding-top: 5.17647vmin;\n    font-size: 12.94118px;\n    font-size: 3.88235vmin; }\n\n.maps[data-x=\"19\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.28947vmin; }\n  .maps[data-x=\"19\"]:before {\n    width: 0.28947vmin;\n    margin-top: -0.28947vmin; }\n  .maps[data-x=\"19\"] .box {\n    width: 4.63158vmin;\n    margin: 0.28947vmin;\n    padding-top: 4.63158vmin;\n    font-size: 11.57895px;\n    font-size: 3.47368vmin; }\n\n.maps[data-x=\"21\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.2619vmin; }\n  .maps[data-x=\"21\"]:before {\n    width: 0.2619vmin;\n    margin-top: -0.2619vmin; }\n  .maps[data-x=\"21\"] .box {\n    width: 4.19048vmin;\n    margin: 0.2619vmin;\n    padding-top: 4.19048vmin;\n    font-size: 10.47619px;\n    font-size: 3.14286vmin; }\n\n.maps[data-x=\"23\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.23913vmin; }\n  .maps[data-x=\"23\"]:before {\n    width: 0.23913vmin;\n    margin-top: -0.23913vmin; }\n  .maps[data-x=\"23\"] .box {\n    width: 3.82609vmin;\n    margin: 0.23913vmin;\n    padding-top: 3.82609vmin;\n    font-size: 9.56522px;\n    font-size: 2.86957vmin; }\n\n.maps[data-x=\"25\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.22vmin; }\n  .maps[data-x=\"25\"]:before {\n    width: 0.22vmin;\n    margin-top: -0.22vmin; }\n  .maps[data-x=\"25\"] .box {\n    width: 3.52vmin;\n    margin: 0.22vmin;\n    padding-top: 3.52vmin;\n    font-size: 8.8px;\n    font-size: 2.64vmin; }\n\n.maps[data-x=\"27\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.2037vmin; }\n  .maps[data-x=\"27\"]:before {\n    width: 0.2037vmin;\n    margin-top: -0.2037vmin; }\n  .maps[data-x=\"27\"] .box {\n    width: 3.25926vmin;\n    margin: 0.2037vmin;\n    padding-top: 3.25926vmin;\n    font-size: 8.14815px;\n    font-size: 2.44444vmin; }\n\n.maps[data-x=\"29\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.18966vmin; }\n  .maps[data-x=\"29\"]:before {\n    width: 0.18966vmin;\n    margin-top: -0.18966vmin; }\n  .maps[data-x=\"29\"] .box {\n    width: 3.03448vmin;\n    margin: 0.18966vmin;\n    padding-top: 3.03448vmin;\n    font-size: 7.58621px;\n    font-size: 2.27586vmin; }\n\n.maps[data-x=\"31\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.17742vmin; }\n  .maps[data-x=\"31\"]:before {\n    width: 0.17742vmin;\n    margin-top: -0.17742vmin; }\n  .maps[data-x=\"31\"] .box {\n    width: 2.83871vmin;\n    margin: 0.17742vmin;\n    padding-top: 2.83871vmin;\n    font-size: 7.09677px;\n    font-size: 2.12903vmin; }\n\n.maps:before {\n  float: left;\n  padding-top: 100%;\n  content: ''; }\n\n.maps:after {\n  display: block;\n  clear: both;\n  content: ''; }\n\n.maps .box {\n  position: relative;\n  float: left;\n  background: #fff; }\n  .maps .box:hover {\n    background: #eee; }\n    .lose .maps .box:hover {\n      background: #fff; }\n  .maps .box .map {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    padding: 0;\n    border: 0;\n    font-style: normal;\n    cursor: pointer;\n    border-radius: 0;\n    text-align: center;\n    box-sizing: border-box;\n    transition: .4s;\n    transform: rotateY(180deg); }\n    .lose .maps .box .map {\n      pointer-events: none; }\n    .maps .box .map.active {\n      color: #fff;\n      cursor: default;\n      background: #000;\n      transform: rotateY(0); }\n    .maps .box .map.bomb {\n      z-index: 10;\n      transform: rotateY(0) scale(2);\n      background: red; }\n      .maps .box .map.bomb i {\n        color: #fff; }\n    .maps .box .map[class*=\"mark\"] {\n      transform: rotateY(0); }\n      .maps .box .map[class*=\"mark\"].markFlag i {\n        color: blue; }\n      .maps .box .map[class*=\"mark\"].markBomb i {\n        color: red; }\n    .maps .box .map i {\n      pointer-events: none; }\n  .maps .box .popover {\n    z-index: 2;\n    position: absolute;\n    top: -50%;\n    right: -30%;\n    bottom: -50%;\n    left: -30%; }\n    .maps .box .popover:before {\n      z-index: 1;\n      position: fixed;\n      top: 0;\n      right: 0;\n      bottom: 0;\n      left: 0;\n      background: #000;\n      opacity: .3;\n      content: \"\"; }\n    .maps .box .popover span {\n      z-index: 10;\n      position: relative;\n      display: block;\n      height: calc(100% / 3);\n      font-size: 65%;\n      background: #fff; }\n      .maps .box .popover span i {\n        display: block;\n        width: 100%;\n        height: 100%;\n        text-align: center; }\n      .maps .box .popover span:hover {\n        background: #eee; }\n\n.maps .popup {\n  z-index: 20;\n  overflow: auto;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  display: inline-block;\n  transform: translate(-50%, -50%);\n  text-align: center;\n  color: #000;\n  background: #fff;\n  animation: popup 1s; }\n\n@keyframes popup {\n  0% {\n    opacity: 0;\n    transform: translate(-50%, -50%) scale(0); }\n  100% {\n    opacity: 1;\n    transform: translate(-50%, -50%) scale(1); } }\n", "", {"version":3,"sources":["/Users/uiwwnwyoon/work/v_wordgame/src/src/spritesmith-generated/sprite.scss","/Users/uiwwnwyoon/work/v_wordgame/src/src/style.scss","/Users/uiwwnwyoon/work/v_wordgame/src/style.scss"],"names":[],"mappings":"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","file":"style.scss","sourcesContent":["// SCSS variables are information about icon's compiled state, stored under its original file name\n//\n// .icon-home {\n//   width: $icon-home-width;\n// }\n//\n// The large array-like variables contain all information about a single icon\n// $icon-home: x y offset_x offset_y width height total_width total_height image_path;\n//\n// At the bottom of this section, we provide information about the spritesheet itself\n// $spritesheet: width height image $spritesheet-sprites;\n$daum-name: 'daum';\n$daum-x: 0px;\n$daum-y: 149px;\n$daum-offset-x: 0px;\n$daum-offset-y: -149px;\n$daum-width: 149px;\n$daum-height: 148px;\n$daum-total-width: 446px;\n$daum-total-height: 297px;\n$daum-image: './spritesmith-generated/sprite.png';\n$daum: (0px, 149px, 0px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'daum', );\n$facebook-name: 'facebook';\n$facebook-x: 298px;\n$facebook-y: 0px;\n$facebook-offset-x: -298px;\n$facebook-offset-y: 0px;\n$facebook-width: 148px;\n$facebook-height: 149px;\n$facebook-total-width: 446px;\n$facebook-total-height: 297px;\n$facebook-image: './spritesmith-generated/sprite.png';\n$facebook: (298px, 0px, -298px, 0px, 148px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'facebook', );\n$kakao-name: 'kakao';\n$kakao-x: 149px;\n$kakao-y: 149px;\n$kakao-offset-x: -149px;\n$kakao-offset-y: -149px;\n$kakao-width: 149px;\n$kakao-height: 148px;\n$kakao-total-width: 446px;\n$kakao-total-height: 297px;\n$kakao-image: './spritesmith-generated/sprite.png';\n$kakao: (149px, 149px, -149px, -149px, 149px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'kakao', );\n$line-name: 'line';\n$line-x: 298px;\n$line-y: 149px;\n$line-offset-x: -298px;\n$line-offset-y: -149px;\n$line-width: 148px;\n$line-height: 148px;\n$line-total-width: 446px;\n$line-total-height: 297px;\n$line-image: './spritesmith-generated/sprite.png';\n$line: (298px, 149px, -298px, -149px, 148px, 148px, 446px, 297px, './spritesmith-generated/sprite.png', 'line', );\n$mail-name: 'mail';\n$mail-x: 0px;\n$mail-y: 0px;\n$mail-offset-x: 0px;\n$mail-offset-y: 0px;\n$mail-width: 149px;\n$mail-height: 149px;\n$mail-total-width: 446px;\n$mail-total-height: 297px;\n$mail-image: './spritesmith-generated/sprite.png';\n$mail: (0px, 0px, 0px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'mail', );\n$twitter-name: 'twitter';\n$twitter-x: 149px;\n$twitter-y: 0px;\n$twitter-offset-x: -149px;\n$twitter-offset-y: 0px;\n$twitter-width: 149px;\n$twitter-height: 149px;\n$twitter-total-width: 446px;\n$twitter-total-height: 297px;\n$twitter-image: './spritesmith-generated/sprite.png';\n$twitter: (149px, 0px, -149px, 0px, 149px, 149px, 446px, 297px, './spritesmith-generated/sprite.png', 'twitter', );\n$spritesheet-width: 446px;\n$spritesheet-height: 297px;\n$spritesheet-image: './spritesmith-generated/sprite.png';\n$spritesheet-sprites: ($daum, $facebook, $kakao, $line, $mail, $twitter, );\n$spritesheet: (446px, 297px, './spritesmith-generated/sprite.png', $spritesheet-sprites, );\n\n// The provided mixins are intended to be used with the array-like variables\n//\n// .icon-home {\n//   @include sprite-width($icon-home);\n// }\n//\n// .icon-email {\n//   @include sprite($icon-email);\n// }\n//\n// Example usage in HTML:\n//\n// `display: block` sprite:\n// <div class=\"icon-home\"></div>\n//\n// To change `display` (e.g. `display: inline-block;`), we suggest using a common CSS class:\n//\n// // CSS\n// .icon {\n//   display: inline-block;\n// }\n//\n// // HTML\n// <i class=\"icon icon-home\"></i>\n@mixin sprite-width($sprite) {\n  width: nth($sprite, 5);\n}\n\n@mixin sprite-height($sprite) {\n  height: nth($sprite, 6);\n}\n\n@mixin sprite-position($sprite) {\n  $sprite-offset-x: nth($sprite, 3);\n  $sprite-offset-y: nth($sprite, 4);\n  background-position: $sprite-offset-x  $sprite-offset-y;\n}\n\n@mixin sprite-image($sprite) {\n  $sprite-image: nth($sprite, 9);\n  background-image: url(#{$sprite-image});\n}\n\n@mixin sprite($sprite) {\n  @include sprite-image($sprite);\n  @include sprite-position($sprite);\n  @include sprite-width($sprite);\n  @include sprite-height($sprite);\n}\n\n// The `sprites` mixin generates identical output to the CSS template\n//   but can be overridden inside of SCSS\n//\n// @include sprites($spritesheet-sprites);\n@mixin sprites($sprites) {\n  @each $sprite in $sprites {\n    $sprite-name: nth($sprite, 10);\n    .#{$sprite-name} {\n      @include sprite($sprite);\n    }\n  }\n}\n","@charset \"UTF-8\";\n@import \"./spritesmith-generated/sprite\";\n@include sprites($spritesheet-sprites);\nhtml,body,#root,[data-reactroot] {\n    width: 100%;\n    height: 100%;\n    font-size: 0;\n}\nbody {\n    margin: 0;\n    padding: 0;\n    background: #000;\n}\n\n[data-reactroot] {\n    text-align: center;\n\n    > * {\n        display: inline-block;\n        font-size: 15px;\n        vertical-align: middle;\n    }\n    \n    &:before {\n        display: inline-block;\n        height: 100%;\n        vertical-align: middle;\n        content: '';\n    }\n}\n\n#findMine {\n    &.restart {\n        &:after {\n            display: none;\n        }\n\n        .startPack {\n            display: none;\n        }\n    }\n    &.win ,\n    &.lose {\n        @keyframes lose {\n            0% {\n                opacity: 0;\n            }\n            100% {\n                opacity: 1;\n            }\n        }\n        &:after {\n            z-index: 1;\n            position: fixed;\n            top: 0;\n            right: 0;\n            bottom: 0;\n            left: 0;\n            background: rgba(0, 0, 0, .7);\n            animation: lose .8s;\n            content: \"\";\n        }\n    }\n    .startPack {\n        width: 40%;\n        background: #fff;\n    \n        button {\n            display: block;\n            width: 100%;\n            font-size: 20px;\n        }\n    \n        input {\n            display: block;\n            width: 100%;\n            height: 30px;\n            margin-bottom: 10px;\n            text-align: center;\n            box-sizing: border-box;\n            font-size: 15px;\n        }\n        \n        sub {\n            display: block;\n            margin-top: -5px;\n        }\n    }\n}\n.maps {\n    $list: 7,9,11,13,15,17,19,21,23,25,27,29,31;\n    @each $i in $list {\n        &[data-x=\"#{$i}\"] {\n            width: 100vmin;\n            margin: auto;\n            padding-top: .5vmin * 11/$i;\n\n            &:before {\n                width: .5vmin * 11/$i;;\n                margin-top: -.5vmin * 11/$i;;\n            }\n            .box {\n                width: 8vmin * 11/$i;;\n                margin: .5vmin * 11/$i;;\n                padding-top: 8vmin * 11/$i;;\n                font-size: 20px * 11/$i;;\n                font-size: 6vmin * 11/$i;;\n    \n            }\n        }\n    }\n    &:before {\n        float: left;\n        padding-top: 100%;\n        content: '';\n    }\n    &:after {\n        display: block;\n        clear: both;\n        content: '';\n    } // .inputItem {\n    // float: left;\n    // }\n    .box {\n        position: relative;\n        float: left;\n        background: #fff;\n        &:hover {\n            background: #eee;\n            .lose & {\n                background: #fff;\n            }\n        }\n        .map {\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n            padding: 0;\n            border: 0;\n            font-style: normal;\n            cursor: pointer;\n            border-radius: 0;\n            text-align: center;\n            box-sizing: border-box;\n            transition: .4s;\n            transform: rotateY(180deg);\n\n            .lose & {\n                pointer-events: none;\n            }\n\n            &.active {\n                color: #fff;\n                cursor: default;\n                background: #000;\n                transform: rotateY(0);\n            }\n\n            &.bomb {\n                z-index: 10;\n                transform: rotateY(0) scale(2);\n                background: red;\n\n                i {\n                    color: #fff;\n                }\n            }\n\n            &[class*=\"mark\"] {\n                transform: rotateY(0);\n                &.markFlag {\n                    i {\n                        color: blue;\n                    }\n                }\n                &.markBomb {\n                    i {\n                        color: red;\n                    }\n                }\n            }\n\n            i {\n                pointer-events: none;\n            }\n        }\n        .popover {\n            z-index: 2;\n            position: absolute;\n            top: -50%;\n            right: -30%;\n            bottom: -50%;\n            left: -30%;\n            &:before {\n                z-index: 1;\n                position: fixed;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                left: 0;\n                background: #000;\n                opacity: .3;\n                content: \"\";\n            }\n            span {\n                z-index: 10;\n                position: relative;\n                display: block;\n                height: calc(100% / 3);\n                font-size: 65%;\n                background: #fff;\n\n                i {\n                    display: block;\n                    width: 100%;\n                    height: 100%;\n                    text-align: center;\n                }\n\n                &:hover {\n                    background: #eee;\n                }\n            }\n        }\n    }\n    .popup {\n        @keyframes popup {\n            0% {\n                opacity: 0;\n                transform: translate(-50%, -50%) scale(0)\n            }\n            100% {\n                opacity: 1;\n                transform: translate(-50%, -50%) scale(1)\n            }\n        }\n        z-index: 20;\n        overflow: auto;\n        position: absolute; // width: 400px;\n        // margin-left: -50%;\n        top: 50%;\n        left: 50%;\n        display: inline-block;\n        // width: 30%;\n        // height: 30%;\n        transform: translate(-50%, -50%);\n        text-align: center;\n        color: #000;\n        background: #fff;\n        animation: popup 1s;\n    }\n}\n",".daum {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: 0px -149px;\n  width: 149px;\n  height: 148px; }\n\n.facebook {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: -298px 0px;\n  width: 148px;\n  height: 149px; }\n\n.kakao {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: -149px -149px;\n  width: 149px;\n  height: 148px; }\n\n.line {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: -298px -149px;\n  width: 148px;\n  height: 148px; }\n\n.mail {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: 0px 0px;\n  width: 149px;\n  height: 149px; }\n\n.twitter {\n  background-image: url(./spritesmith-generated/sprite.png);\n  background-position: -149px 0px;\n  width: 149px;\n  height: 149px; }\n\nhtml, body, #root, [data-reactroot] {\n  width: 100%;\n  height: 100%;\n  font-size: 0; }\n\nbody {\n  margin: 0;\n  padding: 0;\n  background: #000; }\n\n[data-reactroot] {\n  text-align: center; }\n  [data-reactroot] > * {\n    display: inline-block;\n    font-size: 15px;\n    vertical-align: middle; }\n  [data-reactroot]:before {\n    display: inline-block;\n    height: 100%;\n    vertical-align: middle;\n    content: ''; }\n\n#findMine.restart:after {\n  display: none; }\n\n#findMine.restart .startPack {\n  display: none; }\n\n@keyframes lose {\n  0% {\n    opacity: 0; }\n  100% {\n    opacity: 1; } }\n\n#findMine.win:after, #findMine.lose:after {\n  z-index: 1;\n  position: fixed;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  background: rgba(0, 0, 0, 0.7);\n  animation: lose .8s;\n  content: \"\"; }\n\n#findMine .startPack {\n  width: 40%;\n  background: #fff; }\n  #findMine .startPack button {\n    display: block;\n    width: 100%;\n    font-size: 20px; }\n  #findMine .startPack input {\n    display: block;\n    width: 100%;\n    height: 30px;\n    margin-bottom: 10px;\n    text-align: center;\n    box-sizing: border-box;\n    font-size: 15px; }\n  #findMine .startPack sub {\n    display: block;\n    margin-top: -5px; }\n\n.maps[data-x=\"7\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.78571vmin; }\n  .maps[data-x=\"7\"]:before {\n    width: 0.78571vmin;\n    margin-top: -0.78571vmin; }\n  .maps[data-x=\"7\"] .box {\n    width: 12.57143vmin;\n    margin: 0.78571vmin;\n    padding-top: 12.57143vmin;\n    font-size: 31.42857px;\n    font-size: 9.42857vmin; }\n\n.maps[data-x=\"9\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.61111vmin; }\n  .maps[data-x=\"9\"]:before {\n    width: 0.61111vmin;\n    margin-top: -0.61111vmin; }\n  .maps[data-x=\"9\"] .box {\n    width: 9.77778vmin;\n    margin: 0.61111vmin;\n    padding-top: 9.77778vmin;\n    font-size: 24.44444px;\n    font-size: 7.33333vmin; }\n\n.maps[data-x=\"11\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.5vmin; }\n  .maps[data-x=\"11\"]:before {\n    width: 0.5vmin;\n    margin-top: -0.5vmin; }\n  .maps[data-x=\"11\"] .box {\n    width: 8vmin;\n    margin: 0.5vmin;\n    padding-top: 8vmin;\n    font-size: 20px;\n    font-size: 6vmin; }\n\n.maps[data-x=\"13\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.42308vmin; }\n  .maps[data-x=\"13\"]:before {\n    width: 0.42308vmin;\n    margin-top: -0.42308vmin; }\n  .maps[data-x=\"13\"] .box {\n    width: 6.76923vmin;\n    margin: 0.42308vmin;\n    padding-top: 6.76923vmin;\n    font-size: 16.92308px;\n    font-size: 5.07692vmin; }\n\n.maps[data-x=\"15\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.36667vmin; }\n  .maps[data-x=\"15\"]:before {\n    width: 0.36667vmin;\n    margin-top: -0.36667vmin; }\n  .maps[data-x=\"15\"] .box {\n    width: 5.86667vmin;\n    margin: 0.36667vmin;\n    padding-top: 5.86667vmin;\n    font-size: 14.66667px;\n    font-size: 4.4vmin; }\n\n.maps[data-x=\"17\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.32353vmin; }\n  .maps[data-x=\"17\"]:before {\n    width: 0.32353vmin;\n    margin-top: -0.32353vmin; }\n  .maps[data-x=\"17\"] .box {\n    width: 5.17647vmin;\n    margin: 0.32353vmin;\n    padding-top: 5.17647vmin;\n    font-size: 12.94118px;\n    font-size: 3.88235vmin; }\n\n.maps[data-x=\"19\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.28947vmin; }\n  .maps[data-x=\"19\"]:before {\n    width: 0.28947vmin;\n    margin-top: -0.28947vmin; }\n  .maps[data-x=\"19\"] .box {\n    width: 4.63158vmin;\n    margin: 0.28947vmin;\n    padding-top: 4.63158vmin;\n    font-size: 11.57895px;\n    font-size: 3.47368vmin; }\n\n.maps[data-x=\"21\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.2619vmin; }\n  .maps[data-x=\"21\"]:before {\n    width: 0.2619vmin;\n    margin-top: -0.2619vmin; }\n  .maps[data-x=\"21\"] .box {\n    width: 4.19048vmin;\n    margin: 0.2619vmin;\n    padding-top: 4.19048vmin;\n    font-size: 10.47619px;\n    font-size: 3.14286vmin; }\n\n.maps[data-x=\"23\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.23913vmin; }\n  .maps[data-x=\"23\"]:before {\n    width: 0.23913vmin;\n    margin-top: -0.23913vmin; }\n  .maps[data-x=\"23\"] .box {\n    width: 3.82609vmin;\n    margin: 0.23913vmin;\n    padding-top: 3.82609vmin;\n    font-size: 9.56522px;\n    font-size: 2.86957vmin; }\n\n.maps[data-x=\"25\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.22vmin; }\n  .maps[data-x=\"25\"]:before {\n    width: 0.22vmin;\n    margin-top: -0.22vmin; }\n  .maps[data-x=\"25\"] .box {\n    width: 3.52vmin;\n    margin: 0.22vmin;\n    padding-top: 3.52vmin;\n    font-size: 8.8px;\n    font-size: 2.64vmin; }\n\n.maps[data-x=\"27\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.2037vmin; }\n  .maps[data-x=\"27\"]:before {\n    width: 0.2037vmin;\n    margin-top: -0.2037vmin; }\n  .maps[data-x=\"27\"] .box {\n    width: 3.25926vmin;\n    margin: 0.2037vmin;\n    padding-top: 3.25926vmin;\n    font-size: 8.14815px;\n    font-size: 2.44444vmin; }\n\n.maps[data-x=\"29\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.18966vmin; }\n  .maps[data-x=\"29\"]:before {\n    width: 0.18966vmin;\n    margin-top: -0.18966vmin; }\n  .maps[data-x=\"29\"] .box {\n    width: 3.03448vmin;\n    margin: 0.18966vmin;\n    padding-top: 3.03448vmin;\n    font-size: 7.58621px;\n    font-size: 2.27586vmin; }\n\n.maps[data-x=\"31\"] {\n  width: 100vmin;\n  margin: auto;\n  padding-top: 0.17742vmin; }\n  .maps[data-x=\"31\"]:before {\n    width: 0.17742vmin;\n    margin-top: -0.17742vmin; }\n  .maps[data-x=\"31\"] .box {\n    width: 2.83871vmin;\n    margin: 0.17742vmin;\n    padding-top: 2.83871vmin;\n    font-size: 7.09677px;\n    font-size: 2.12903vmin; }\n\n.maps:before {\n  float: left;\n  padding-top: 100%;\n  content: ''; }\n\n.maps:after {\n  display: block;\n  clear: both;\n  content: ''; }\n\n.maps .box {\n  position: relative;\n  float: left;\n  background: #fff; }\n  .maps .box:hover {\n    background: #eee; }\n    .lose .maps .box:hover {\n      background: #fff; }\n  .maps .box .map {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    padding: 0;\n    border: 0;\n    font-style: normal;\n    cursor: pointer;\n    border-radius: 0;\n    text-align: center;\n    box-sizing: border-box;\n    transition: .4s;\n    transform: rotateY(180deg); }\n    .lose .maps .box .map {\n      pointer-events: none; }\n    .maps .box .map.active {\n      color: #fff;\n      cursor: default;\n      background: #000;\n      transform: rotateY(0); }\n    .maps .box .map.bomb {\n      z-index: 10;\n      transform: rotateY(0) scale(2);\n      background: red; }\n      .maps .box .map.bomb i {\n        color: #fff; }\n    .maps .box .map[class*=\"mark\"] {\n      transform: rotateY(0); }\n      .maps .box .map[class*=\"mark\"].markFlag i {\n        color: blue; }\n      .maps .box .map[class*=\"mark\"].markBomb i {\n        color: red; }\n    .maps .box .map i {\n      pointer-events: none; }\n  .maps .box .popover {\n    z-index: 2;\n    position: absolute;\n    top: -50%;\n    right: -30%;\n    bottom: -50%;\n    left: -30%; }\n    .maps .box .popover:before {\n      z-index: 1;\n      position: fixed;\n      top: 0;\n      right: 0;\n      bottom: 0;\n      left: 0;\n      background: #000;\n      opacity: .3;\n      content: \"\"; }\n    .maps .box .popover span {\n      z-index: 10;\n      position: relative;\n      display: block;\n      height: calc(100% / 3);\n      font-size: 65%;\n      background: #fff; }\n      .maps .box .popover span i {\n        display: block;\n        width: 100%;\n        height: 100%;\n        text-align: center; }\n      .maps .box .popover span:hover {\n        background: #eee; }\n\n.maps .popup {\n  z-index: 20;\n  overflow: auto;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  display: inline-block;\n  transform: translate(-50%, -50%);\n  text-align: center;\n  color: #000;\n  background: #fff;\n  animation: popup 1s; }\n\n@keyframes popup {\n  0% {\n    opacity: 0;\n    transform: translate(-50%, -50%) scale(0); }\n  100% {\n    opacity: 1;\n    transform: translate(-50%, -50%) scale(1); } }\n"],"sourceRoot":""}]);
+>>>>>>> parent of 33335ce... 마우스우클릭해제
 
 function cssWithMappingToString(item, useSourceMap) {
 	var content = item[1] || '';

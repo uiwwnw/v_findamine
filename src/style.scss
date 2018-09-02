@@ -173,5 +173,19 @@ p {
             }
 
         }
+        z-index: 20;
+        overflow: auto;
+        position: absolute; // width: 400px;
+        // margin-left: -50%;
+        top: 50%;
+        left: 50%;
+        display: inline-block;
+        // width: 30%;
+        // height: 30%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #000;
+        background: #fff;
+        animation: popup 1s;
     }
 }
